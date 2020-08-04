@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>内容页面</title>
+		<style type="text/css">
+		    body {
+		        padding: 0;
+				margin: 0;
+				width: 100%;
+		    }
+			.div_input{
+				font-size: 18px;
+				width: 100%;
+				height: 40px;
+				padding: 20px 10px 0 10px;
+			}
+			.div_input span{
+				width: 20%;
+				font-weight: bold;
+			}
+			.div_input input{
+				width: 90%;
+				border: 0;
+				border-bottom: 1px solid black;
+				padding-left: 5px;
+			}
+			.div_input input:focus{
+				outline: none;
+				
+			}
+			.div_input_type{
+				font-size: 18px;
+				width: 100%;
+				height: 40px;
+				padding: 20px 10px 0 10px;
+				font-weight: bold;
+			}
+			.div_input_img{
+				font-size: 18px;
+				width: 100%;
+				height: 100px;
+				padding: 20px 10px 0 10px;
+				font-weight: bold;
+			}
+			.div_input_img img{
+				width: 80px;
+				height: 100px;
+			}
+			#img{
+				width: 80px;
+				height: 100px;
+				position:absolute;
+				opacity:0;
+			}
+			#editor{
+				width: 100%;
+				padding: 20px 10px 0 10px;
+			}
+			.w-e-text-container{
+				height: 700px !important;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="div_input_type">
+			<span>类型：</span>
+			<input type="radio" name="type" value="0" checked="checked"/>散文
+			<input type="radio" name="type" value="1"/>日记
+			<input type="radio" name="type" value="2"/>其它
+		</div>
+		<div class="div_input">
+			<span>标题：</span>
+			<input type="text" id="title" placeholder="请输入标题" />
+		</div>
+		<div class="div_input">
+			<span>简介：</span>
+			<input type="text" id="smallContent" placeholder="请输入简介" />
+		</div>
+		<div class="div_input_img">
+			<span>封面：</span>
+			<input id="img" title="点击插入封面" type="file" accept="image/gif,image/jpeg,image/x-png"  multiple="multiple" />
+			<img id="img_pic" src="../statics/images/jia.jpg" />
+		</div>
+		<!-- 富文本编辑器 -->
+		<div id="editor">
+			<p>请输入内容......</p>
+		</div>
+		
+		<button id="submit">提交</button>
+
+		<!-- 注意， 只需要引用 JS，无需引用任何 CSS ！！！-->
+		<script type="text/javascript" src="../statics/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../statics/js/wangEditor.min.js"></script>
+		<script type="text/javascript" src="../statics/js/config.js"></script>
+		<script type="text/javascript">
+			var E = window.wangEditor
+			var editor = new E('#editor')
+			// 或者 var editor = new E( document.getElementById('editor') )
+			
+			// editor.customConfig.showLinkImg = false  // 隐藏“网络图片”tab
+			editor.customConfig.uploadFileName = 'uploadImg'
+			editor.customConfig.uploadImgServer = url.baseUrl+'/upload/image'//官方文档上写的是服务器地址，也就是上传图片的方法名
+
+			editor.customConfig.debug = true
+
+			editor.create()
+			var id;//用于图片文件的命名和后台数据的统一
+			$(function () {
+				// 监视封面更改
+				$("#img").change(function () {
+					// var rd=new FileReader();  //创建文件读取对象
+					// var file=$(this)[0].files[0];
+					var formData = new FormData();
+					formData.append("uploadImg", $(this)[0].files[0]);
+					$.ajax({
+						url:url.baseUrl+"upload/image",
+						type: 'post',
+						enctype: 'multipart/form-data',
+						processData: false,
+						contentType: false,
+						cache: false,
+						data:formData,
+						success: function(data){
+							if (data.errno == 0) {
+								$("#img_pic").attr('src',data.data);
+							} else{
+								alert(data.message);
+							}
+						}
+					})
+					// rd.readAsDataURL(file);  //读取类型为base64
+					// rd.onload=function (ev) {
+					// 	$("#img_pic").attr('src',this.result); 
+					// }
+				});
+				
+				$("#submit").on('click',function(){
+					var data = {};
+					data.type = parseInt($('.div_input_type input[name="type"]:checked').val());
+					data.title = $("#title").val();
+					data.smallContent = $("#smallContent").val();
+					data.img = $("#img_pic")[0].src;
+					data.content = editor.txt.html();
+					if(data.title == null || data.title == ''){
+						alert("请输入标题！");
+						return
+					}else if(data.smallContent == null || data.smallContent == ''){
+						alert("请输入简介！");
+						return
+					}else if(data.img == null || data.img == 'statics/images/jia.jpg' || data.img == ''){
+						alert("请输入封面！");
+						return
+					}else if(data.content == null || data.content == ''){
+						alert("请输入内容！");
+						return
+					}
+					// console.log(JSON.stringify(data));
+					$.ajax({
+						url:url.baseUrl+"workArticle/save",
+						type: 'post',
+						contentType: 'application/json;charset=utf-8',
+						dateType: 'json',
+						data:JSON.stringify(data),
+						success: function(data){
+							if (data.errno == 0) {
+								// alert(data.message);
+								location.reload();//刷线当前页面,相当于F5
+							} else{
+								alert(data.message);
+							}
+						}
+					})
+					// alert(data.content)
+				})
+			});
+			// 获取当前时间戳
+			// function suijiNum(){
+			// 	id = new Date().getTime();
+			// 	console.log('---------------------随机数--------'+id);
+			// }
+		</script>
+	</body>
+</html>
