@@ -1,16 +1,16 @@
 package models
 
 type Article struct {
-	Id int `json:"id"`
-	Create_date int `json:"create_date"`
-	create_by int `json:"create_by"`
-	update_date int `json:"update_date"`
-	update_by int `json:"update_by"`
-	title int `json:"title"`
-	Type int `json:"type"`
-	small_content int `json:"small_content"`
-	content int `json:"content"`
-	img int `json:"img"`
-	read_num int `json:"read_num"`
-	is_del int `json:"is_del"`
+	Id           int    `json:"id"`
+	CreateDate   int    `json:"create_date"`
+	CreateBy     int    `json:"create_by"`
+	UpdateDate   int    `json:"update_date"`
+	UpdateBy     int    `json:"update_by"`
+	Title        string `json:"title"`
+	Type         int    `json:"type"`
+	SmallContent string `json:"small_content"`
+	Content      string `json:"content"`
+	Img          string `json:"img"`
+	ReadNum      int    `json:"read_num"`
+	IsDel        int    `json:"is_del"`
 }

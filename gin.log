@@ -1,0 +1,28 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /api/basic/login          --> gin/apis.Login (3 handlers)
+[GIN-debug] GET    /user/fU                  --> gin/apis.FindUser (3 handlers)
+[GIN-debug] GET    /index                    --> gin/apis.IndexHtml (3 handlers)
+[GIN-debug] GET    /gustbook                 --> gin/apis.GuestBookHtml (3 handlers)
+[GIN-debug] GET    /article                  --> gin/apis.ArticleHtml (3 handlers)
+[GIN-debug] Loaded HTML Templates (9): 
+	- 
+	- detail.html
+	- fuwenben.html
+	- gustbook.html
+	- link.html
+	- archives.html
+	- index.html
+	- search.html
+	- update.html
+
+[GIN-debug] GET    /statics/*filepath        --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] HEAD   /statics/*filepath        --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] GET    /file/*filepath           --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] HEAD   /file/*filepath           --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] GET    /getH                     --> gin/apis.GetHttp (4 handlers)
+[GIN-debug] Listening and serving HTTP on :8000

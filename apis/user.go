@@ -25,7 +25,7 @@ func InsertUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, models.ReqCode) //作为错误处理
 		return
 	}
-	user.CreateDate = int(time.Now().Unix() / 1000) //获取时间戳
+	user.CreateDate = int(time.Now().Unix()) //获取时间戳
 	user.Salt = utils.GetRandomString(6)
 	user.IsDel = 0
 	user.CreateBy = 0
@@ -33,7 +33,6 @@ func InsertUser(c *gin.Context) {
 	config.Db.Table("sys_user").Create(&user)
 	c.JSON(http.StatusOK, models.SuccCode)
 }
-
 
 //查找用户
 func FindUser(c *gin.Context) {
@@ -61,17 +60,21 @@ func Login(c *gin.Context) {
 		return
 	}
 	var ur models.User
-	config.Db.Table("sys_user").Where("account = ?", user.Account).Select("password").First(&ur)
+	//Table("sys_user").Where("account = ?", user.Account).Select("xxxx).Row().Scan(&xxx)
+	config.Db.Table("sys_user").Where("account = ?", user.Account).First(&ur)
 	if strings.ToLower(utils.MD5([]byte(user.Password+user.Salt))) == strings.ToLower(ur.Password) {
 		//表示密码一致，则通过，返回token和用户ID
-		token := utils.CreaToken(ur.Id, user.Salt)
-		utils.InserRedis(token, ur.Id)
-		c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, token))
+		token := utils.CreaToken(ur.Id, ur.Salt)
+		//utils.InserRedis(token, ur.Id) /将用户的信息保存到redis中
+		scoreMap := make(map[string]interface{}, 3) //3表示map的容量，可不填
+		scoreMap["token"] = token
+		scoreMap["userId"] = ur.Id
+		scoreMap["salt"] = ur.Salt
+		c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, scoreMap))
 		return
 	}
 	c.JSON(http.StatusOK, models.LoginCode)
 }
-
 
 func GetHttp(c *gin.Context) {
 	rsp, err := http.Get("http://www.wh.ccoo.cn/tieba/today-9-1-1.html")
