@@ -143,7 +143,7 @@
         });
 
         $("#submit").on('click', function () {
-            const data = {};
+            let data = {};
             data.type = parseInt($('.div_input_type input[name="type"]:checked').val());
             data.title = $("#title").val();
             data.small_content = $("#smallContent").val();

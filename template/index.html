@@ -271,7 +271,7 @@
 				</li>
 			</div> -->
 		<div class="cr">
-			&copy;2019. Design by <a href="">Hanan_Yu.Liu</a>
+			&copy;2020. Design by <a href="">Hanan_Yu.Liu</a>
 		</div>
 		<script type='text/javascript' src='/statics/js/jquery.min.js'></script>
 		<script type='text/javascript' src='/statics/js/plugins.js'></script>
@@ -281,9 +281,9 @@
 		<script type="text/javascript" src="/statics/js/config.js"></script>
 		<script type="text/javascript">
 			//设置默认值
-			var currentPage = 1;
-			var pageSize = 10;
-			var time = 0;//设置默认的时间
+			let currentPage = 1;
+			let pageSize = 5;
+			let time = 0;//设置默认的时间
 			//设置下拉刷新
 			$(function () {
 				// $("#content").empty();//清空DIV的内容
@@ -312,32 +312,32 @@
 
 
 			function getlist(currentPage, pageSize) {
-				var data = {};
-				var flag = false;
+				let data = {};
+				let flag = false;
 				//设置默认的页面请求参数，并设置全局参数，为翻页数据提供支持
 				data.currentPage = currentPage;
 				data.pageSize = pageSize;
 				$.ajax({
-					url: url.baseUrl + "workArticle/getList",
+					url: url.baseUrl + "api/article/get",
 					type: 'post',
 					contentType: 'application/json;charset=utf-8',
 					dateType: 'json',
 					async: false,
 					data: JSON.stringify(data),
 					success: function (data) {
-						if (data.errno == 200) {
-							var list = data.data.list;
+						if (data.code == 200) {
+							let list = data.data;
 							if (list == '' || list == null || list.length == 0) {
 								flag = true;
 							} else {
-								var strHtml = "";//页面数据
-								for (let res of list) {
+								let strHtml = "";//页面数据
+								for (let res in list) {
 									if (res.type == 0) {
 										//表示散文
 										strHtml += '<div class="post post-layout-list" data-aos="fade-up"><div class="status_list_item icon_kyubo">' +
 											'<div class="status_user" style="background-image: url(' + res.img + ');">' +
 											'<div class="status_section"><a href="detail.html?id=' + res.id + '" class="status_btn">' + res.title + '</a>' +
-											'<p class="section_p">' + res.smallContent + '</p>' +
+											'<p class="section_p">' + res.small_content + '</p>' +
 											'</div></div></div></div>';
 									} else if (res.type == 1) {
 										//表示日记
@@ -345,41 +345,42 @@
 											'<div class="row review-item-wrapper"><div class="col-sm-3"><a rel="nofollow" href="detail.html?id=' + res.id + '" >' +
 											'<div class="review-item-img" style="background-image: url(' + res.img + ');"></div></a></div>' +
 											'<div class="col-sm-9 flex-xs-middle"><div class="review-item-title"><a href="detail.html?id=' + res.id + '" rel="bookmark">' + res.title + '</a></div>' +
-											'<div class="review-item-creator"><b>发布日期：</b>' + formatTime(res.createDate) + '</div><span class="review-item-info"><b>总浏览量：</b>' + res.readNum + ' 阅读</span></div></div>' +
+											'<div class="review-item-creator"><b>发布日期：</b>' + formatTime(res.create_date) + '</div><span class="review-item-info"><b>总浏览量：</b>' + res.read_num + ' 阅读</span></div></div>' +
 											'<div class="review-bg-wrapper"><div class="bg-blur" style="background-image: url(' + res.img + ');"></div></div></div>' +
-											'<div class="post-container"><div class="entry-content">' + res.smallContent + '</div><div class="post-footer">' +
+											'<div class="post-container"><div class="entry-content">' + res.small_content + '</div><div class="post-footer">' +
 											'<a class="gaz-btn primary" href="detail.html?id=' + res.id + '">READ MORE</a>' +
 											'</div></div></div></div>';
-									} else if (res.type == 2) {
-										//表示其它
-										var img = res.img;
-										if (img.indexOf(",") == -1) {
-											//只含有一张图片
-											strHtml += '<div class="post post-layout-list js-gallery" data-aos="fade-up"><div class="post-album"><div class="row content"><div class="bg"' +
-												'style="background-image: url(' + img + ');"></div><div class="contentext flex-xs-middle"><div class="album-title"><a href="detail.html?id=' + res.id + '" >' + res.title + '</a></div>' +
-												'<h5 class="review-item-creator"><b>发布日期：</b>' + formatTime(res.createDate) + '</h5><div class="album-content">' + res.smallContent + '</div></div>' +
-												'<div class="album-thumb-width flex-xs-middle"><div class="row album-thumb no-gutter">' +
-												'<div class="col-xs-4"><img class="thumb" src="' + img + '" /></div>' +
-												'<div class="col-xs-4"><a href="">1 pics</a></div></div></div></div></div></div>';
-										} else {
-											//表示有多张图片
-											var imgList = img.substring(0, img.length - 1).split(",");
-											strHtml += '<div class="post post-layout-list js-gallery" data-aos="fade-up"><div class="post-album"><div class="row content"><div class="bg"' +
-												'style="background-image: url(' + imgList[0] + ');"></div><div class="contentext flex-xs-middle"><div class="album-title"><a href="detail.html?id=' + res.id + '">' + res.title + '</a></div>' +
-												'<h5 class="review-item-creator"><b>发布日期：</b>' + formatTime(res.createDate) + '</h5><div class="album-content">' + res.smallContent + '</div></div>' +
-												'<div class="album-thumb-width flex-xs-middle"><div class="row album-thumb no-gutter">';
-											for (let value of imgList) {
-												strHtml += '<div class="col-xs-4"><img class="thumb" src="' + value + '" /></div>';
-											}
-											strHtml += '<div class="col-xs-4"><a href="">' + imgList.length + ' pics</a></div></div></div></div></div></div>';
-										}
 									}
+									// else if (res.type == 2) {
+									// 	//表示其它
+									// 	var img = res.img;
+									// 	if (img.indexOf(",") == -1) {
+									// 		//只含有一张图片
+									// 		strHtml += '<div class="post post-layout-list js-gallery" data-aos="fade-up"><div class="post-album"><div class="row content"><div class="bg"' +
+									// 			'style="background-image: url(' + img + ');"></div><div class="contentext flex-xs-middle"><div class="album-title"><a href="detail.html?id=' + res.id + '" >' + res.title + '</a></div>' +
+									// 			'<h5 class="review-item-creator"><b>发布日期：</b>' + formatTime(res.createDate) + '</h5><div class="album-content">' + res.smallContent + '</div></div>' +
+									// 			'<div class="album-thumb-width flex-xs-middle"><div class="row album-thumb no-gutter">' +
+									// 			'<div class="col-xs-4"><img class="thumb" src="' + img + '" /></div>' +
+									// 			'<div class="col-xs-4"><a href="">1 pics</a></div></div></div></div></div></div>';
+									// 	} else {
+									// 		//表示有多张图片
+									// 		var imgList = img.substring(0, img.length - 1).split(",");
+									// 		strHtml += '<div class="post post-layout-list js-gallery" data-aos="fade-up"><div class="post-album"><div class="row content"><div class="bg"' +
+									// 			'style="background-image: url(' + imgList[0] + ');"></div><div class="contentext flex-xs-middle"><div class="album-title"><a href="detail.html?id=' + res.id + '">' + res.title + '</a></div>' +
+									// 			'<h5 class="review-item-creator"><b>发布日期：</b>' + formatTime(res.createDate) + '</h5><div class="album-content">' + res.smallContent + '</div></div>' +
+									// 			'<div class="album-thumb-width flex-xs-middle"><div class="row album-thumb no-gutter">';
+									// 		for (let value of imgList) {
+									// 			strHtml += '<div class="col-xs-4"><img class="thumb" src="' + value + '" /></div>';
+									// 		}
+									// 		strHtml += '<div class="col-xs-4"><a href="">' + imgList.length + ' pics</a></div></div></div></div></div></div>';
+									// 	}
+									// }
 								}
 								$("#content").append(strHtml);
 							}
 
 						} else {
-							alert(data.message);
+							alert(data.msg);
 						}
 					},
 					error: function (e) {

@@ -1,5 +1,8 @@
 package models
 
+/**
+封装返回结构
+*/
 import (
 	"net/http"
 )

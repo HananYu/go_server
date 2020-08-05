@@ -44,3 +44,23 @@ func InserTArticle(c *gin.Context) {
 	config.Db.Table("work_article").Create(&article)
 	c.JSON(http.StatusOK, models.SuccCode)
 }
+
+//获取文章列表
+func GetArticleList(c *gin.Context) {
+	var page models.PageRequest
+	c.BindJSON(&page)
+	if page.PageSize == config.Common_ZERO {
+		//设置每页大小默认值
+		page.PageSize = config.Common_FIVE
+	}
+	if page.CurrentPage == config.Common_ZERO {
+		//设置当前页默认值
+		page.CurrentPage = config.Common_ONE
+	}
+
+	var arts []models.Article
+	config.Db.Table("work_article").Limit(page.PageSize).Offset((page.CurrentPage - config.Common_ONE) * page.PageSize).Find(&arts)
+
+	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
+
+}

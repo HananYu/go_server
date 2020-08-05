@@ -13,9 +13,10 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 
 	// Use(Authorize())之前的接口，都不用经过身份验证
-	router.POST("/api/basic/login", Login)         //登陆接口
-	router.POST("/api/basic/upload", UploadFile)   //上传文件接口
-	router.POST("/api/article/add", InserTArticle) //保存文章接口
+	router.POST("/api/basic/login", Login)          //登陆接口
+	router.POST("/api/basic/upload", UploadFile)    //上传文件接口
+	router.POST("/api/article/add", InserTArticle)  //保存文章接口
+	router.POST("/api/article/get", GetArticleList) //获取文章列表
 	router.GET("/user/fU", FindUser)
 
 	//网页跳转
