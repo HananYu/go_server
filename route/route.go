@@ -13,16 +13,29 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 
 	// Use(Authorize())之前的接口，都不用经过身份验证
-	router.POST("/api/basic/login", Login)          //登陆接口
-	router.POST("/api/basic/upload", UploadFile)    //上传文件接口
-	router.POST("/api/article/add", InserTArticle)  //保存文章接口
-	router.POST("/api/article/get", GetArticleList) //获取文章列表
+	router.POST("/api/basic/login", Login) //登陆接口
+
+	//文章接口
+	router.POST("/api/basic/upload", UploadFile)         //上传文件接口
+	router.POST("/api/article/add", InserTArticle)       //保存文章接口
+	router.POST("/api/article/get", GetArticleList)      //获取文章列表
+	router.GET("/api/article/search", SearchArticleList) //搜索文章列表
+	router.GET("/api/article/detail", DetailArticleList) //获取文章详情
+
+	//留言接口
+	router.POST("/api/guestbook/add", InsetGuestBook) //插入留言
+
 	router.GET("/user/fU", FindUser)
 
 	//网页跳转
 	router.GET("/index", IndexHtml)
 	router.GET("/gustbook", GuestBookHtml)
 	router.GET("/article", ArticleHtml)
+	router.GET("/search", SearchHtml)
+	router.GET("/archives", ArchivesHtml)
+	router.GET("/detail", DetailHtml)
+	router.GET("/link", LinkHtml)
+	router.GET("/update", UpdateHtml)
 
 	//静态资源，放置在拦截器之前不会对静态资源进行拦截
 	router.LoadHTMLGlob("template/*")

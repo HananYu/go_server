@@ -12,14 +12,14 @@
 </head>
 
 <body class="home blog custom-background round-avatars">
-	<div class="Yarn_Background" style="background-image: url( /statics/images/47fb3c_.jpg);"></div>
-	<form class="js-search search-form search-form--modal" method="get" action="search.html" role="search">
+	<div class="Yarn_Background" style="background-image: url(../statics/images/47fb3c_.jpg);"></div>
+	<form class="js-search search-form search-form--modal" method="get" action="search" role="search">
 		<div class="search-form__inner">
 			<div>
 				<div id="search-container" class="ajax_search">
 					<form method="get" id="searchform" action="">
 						<div class="filter_container"><input type="text" value="" autocomplete="off"
-								placeholder="请输入搜索标题" name="s" id="search-input" />
+								placeholder="请输入" name="s" id="search-input" />
 							<ul id="search_filtered" class="search_filtered"></ul>
 						</div>
 						<input type="submit" name="submit" id="searchsubmit" class="searchsubmit" value="" />
@@ -42,7 +42,7 @@
 							<ul id="primary-menu" class="menu">
 								<li id="menu-item-17"
 									class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-17">
-									<a href="index.html">首页</a>
+									<a href="index">首页</a>
 								</li>
 								<li id="menu-item-173"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-173">
@@ -50,29 +50,29 @@
 								</li>
 								<li id="menu-item-78"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78">
-									<a href="link.html">链接</a>
+									<a href="link">链接</a>
 								</li>
 								<li id="menu-item-252"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-252">
-									<a href="archives.html">归档</a>
-									<ul class="sub-menu">
-										<li id="menu-item-165"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-165">
-											<a href="javascript:void(0);">theme</a>
-										</li>
-										<li id="menu-item-163"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-163">
-											<a href="javascript:void(0);">Happen</a>
-										</li>
-										<li id="menu-item-924"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-924">
-											<a href="javascript:void(0);">WeWork</a>
-										</li>
-										<li id="menu-item-164"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-164">
-											<a href="javascript:void(0);">WordPress</a>
-										</li>
-									</ul>
+									<a href="archives">归档</a>
+{{/*									<ul class="sub-menu">*/}}
+{{/*										<li id="menu-item-165"*/}}
+{{/*											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-165">*/}}
+{{/*											<a href="javascript:void(0);">theme</a>*/}}
+{{/*										</li>*/}}
+{{/*										<li id="menu-item-163"*/}}
+{{/*											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-163">*/}}
+{{/*											<a href="javascript:void(0);">Happen</a>*/}}
+{{/*										</li>*/}}
+{{/*										<li id="menu-item-924"*/}}
+{{/*											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-924">*/}}
+{{/*											<a href="javascript:void(0);">WeWork</a>*/}}
+{{/*										</li>*/}}
+{{/*										<li id="menu-item-164"*/}}
+{{/*											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-164">*/}}
+{{/*											<a href="javascript:void(0);">WordPress</a>*/}}
+{{/*										</li>*/}}
+{{/*									</ul>*/}}
 								</li>
 								<li id="menu-item-57"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57">
@@ -91,7 +91,7 @@
 	</div>
 	<header id="masthead" class="overlay animated from-bottom" itemprop="brand">
 		<div class="site-branding text-center">
-			<a href="index.html">
+			<a href="index">
 				<figure>
 					<img class="custom-logo avatar" src="../statics/images/omikron1.png" />
 				</figure>
@@ -285,10 +285,6 @@
 			let pageSize = 5;
 			let time = 0;//设置默认的时间
 
-
-
-
-
 			//设置下拉刷新
 			$(function () {
 				// $("#content").empty();//清空DIV的内容
@@ -344,19 +340,19 @@
 										//表示散文
 										strHtml += '<div class="post post-layout-list" data-aos="fade-up"><div class="status_list_item icon_kyubo">' +
 											'<div class="status_user" style="background-image: url(' + res.img + ');">' +
-											'<div class="status_section"><a href="detail.html?id=' + res.id + '" class="status_btn">' + res.title + '</a>' +
+											'<div class="status_section"><a href="detail?id=' + res.id + '" class="status_btn">' + res.title + '</a>' +
 											'<p class="section_p">' + res.small_content + '</p>' +
 											'</div></div></div></div>';
-									} else if (res.type == 1) {
+									} else {
 										//表示日记
 										strHtml += '<div class="post post-layout-list" data-aos="fade-up"><div class="postnormal review "><div class="post-container review-item">' +
-											'<div class="row review-item-wrapper"><div class="col-sm-3"><a rel="nofollow" href="detail.html?id=' + res.id + '" >' +
+											'<div class="row review-item-wrapper"><div class="col-sm-3"><a rel="nofollow" href="detail?id=' + res.id + '" >' +
 											'<div class="review-item-img" style="background-image: url(' + res.img + ');"></div></a></div>' +
-											'<div class="col-sm-9 flex-xs-middle"><div class="review-item-title"><a href="detail.html?id=' + res.id + '" rel="bookmark">' + res.title + '</a></div>' +
+											'<div class="col-sm-9 flex-xs-middle"><div class="review-item-title"><a href="detail?id=' + res.id + '" rel="bookmark">' + res.title + '</a></div>' +
 											'<div class="review-item-creator"><b>发布日期：</b>' + formatTime(res.create_date) + '</div><span class="review-item-info"><b>总浏览量：</b>' + res.read_num + ' 阅读</span></div></div>' +
 											'<div class="review-bg-wrapper"><div class="bg-blur" style="background-image: url(' + res.img + ');"></div></div></div>' +
 											'<div class="post-container"><div class="entry-content">' + res.small_content + '</div><div class="post-footer">' +
-											'<a class="gaz-btn primary" href="detail.html?id=' + res.id + '">READ MORE</a>' +
+											'<a class="gaz-btn primary" href="detail?id=' + res.id + '">READ MORE</a>' +
 											'</div></div></div></div>';
 									}
 									// else if (res.type == 2) {

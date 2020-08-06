@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+//上传文件
 func UploadFile(c *gin.Context) {
 	//单文件
 	file, err := c.FormFile("file")
@@ -64,4 +65,49 @@ func GetArticleList(c *gin.Context) {
 	var arts []models.Article
 	config.Db.Table("work_article").Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.Common_ONE) * page.PageSize).Find(&arts)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
+}
+
+//搜索文章列表
+func SearchArticleList(c *gin.Context) {
+	name := c.Query("s")
+	if name == "" {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	name = "%" + name + "%"
+	var arts []models.ArticleName
+	config.Db.Table("work_article").Order("create_date desc").Where("title LIKE ? or small_content LIKE ? ", name, name).Find(&arts)
+	for i, n := 0, len(arts); i < n; i++ {
+		if arts[i].Type == config.Common_ZERO {
+			arts[i].TypeName = "随笔"
+		}
+		if arts[i].Type == config.Common_ONE {
+			arts[i].TypeName = "随记"
+		}
+	}
+	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
+}
+
+//获取文章详情
+func DetailArticleList(c *gin.Context) {
+	cid := c.Query("id")
+	id, err := strconv.Atoi(cid)
+	if err != nil {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	returnMap := make(map[string]interface{}, config.Common_FOUR)
+	var art models.ArticleName
+	config.Db.Table("work_article").Where("id = ?", id).First(&art)
+	returnMap["obj"] = art //当前文章详情
+	var lastObj models.ArticleSim
+	config.Db.Raw("select id, img,  title from work_article where id =(select id from work_article where id < ? order by id desc limit 1)", id).Scan(&lastObj)
+	returnMap["lastObj"] = lastObj //上一条文章
+	var nextObj models.ArticleSim
+	config.Db.Raw("select id, img,  title from work_article where id =(select id from work_article where id > ? order by id desc limit 1)", id).Scan(&nextObj)
+	returnMap["nextObj"] = nextObj //下一条文章
+	var books []models.GuestBook
+	config.Db.Table("work_review").Order("create_time desc").Where("a_id = ?", id).Find(&books)
+	returnMap["comList"] = books //文章的评论
+	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, returnMap))
 }

@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>Hanan_Yu.Liu</title>
+	<link rel="shortcut icon" type="image/x-icon" href="../statics/images/icon.png"/>
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<link rel="stylesheet" type="text/css" href="../statics/css/index.css" media="all" />
@@ -13,13 +14,13 @@
 
 <body class="home blog custom-background round-avatars" itemscope itemtype="http://schema.org/Organization">
 	<div class="Yarn_Background" style="background-image: url( ../statics/images/47fb3c_.jpg);"></div>
-	<form class="js-search search-form search-form--modal" method="get" action="search.html" role="search">
+	<form class="js-search search-form search-form--modal" method="get" action="search" role="search">
 		<div class="search-form__inner">
 			<div>
 				<div id="search-container" class="ajax_search">
 					<form method="get" id="searchform" action="">
 						<div class="filter_container"><input type="text" value="" autocomplete="off"
-							placeholder="请输入搜索标题" name="s" id="search-input" />
+							placeholder="请输入" name="s" id="search-input" />
 							<ul id="search_filtered" class="search_filtered"></ul>
 						</div>
 						<input type="submit" name="submit" id="searchsubmit" class="searchsubmit" value="" />
@@ -42,7 +43,7 @@
 							<ul id="primary-menu" class="menu">
 								<li id="menu-item-17"
 									class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-17">
-									<a href="index.html">首页</a>
+									<a href="index">首页</a>
 								</li>
 								<li id="menu-item-173"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-173">
@@ -50,33 +51,15 @@
 								</li>
 								<li id="menu-item-78"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78">
-									<a href="link.html">链接</a>
+									<a href="link">链接</a>
 								</li>
 								<li id="menu-item-252"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-252">
-									<a href="archives.html">归档</a>
-									<ul class="sub-menu">
-										<li id="menu-item-165"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-165">
-											<a href="javascript:void(0);">theme</a>
-										</li>
-										<li id="menu-item-163"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-163">
-											<a href="javascript:void(0);">Happen</a>
-										</li>
-										<li id="menu-item-924"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-924">
-											<a href="javascript:void(0);">WeWork</a>
-										</li>
-										<li id="menu-item-164"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-164">
-											<a href="javascript:void(0);">WordPress</a>
-										</li>
-									</ul>
+									<a href="archives">归档</a>
 								</li>
 								<li id="menu-item-57"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57">
-									<a href="gustbook.html">留言</a>
+									<a href="gustbook">留言</a>
 								</li>
 							</ul>
 						</div>
@@ -250,7 +233,7 @@
 						<div id="respond" class="comment-respond">
 							<h6 id="replytitle" class="comment-reply-title"><a rel="nofollow"
 									id="cancel-comment-reply-link" href="" style="display:none;">取消</a></h6>
-							<form action="#" method="post" id="commentform" class="clearfix">
+							<form id="commentform" class="clearfix">
 								<div class="clearfix"></div>
 								<div class="author-info">
 									<input type="text" name="author" id="author" placeholder="昵  称 : " value=""
@@ -354,32 +337,34 @@
 			$(function () {
 				var id = getUrlParam('id');
 				$.ajax({
-					url: url.baseUrl + "workArticle/getArticle?id=" + id,
+					url: url.baseUrl + "api/article/detail?id=" + id,
 					type: 'get',
 					contentType: 'application/json;charset=utf-8',
 					dateType: 'json',
 					async: false,
 					success: function (data) {
-						if (data.errno == 200) {
-							var obj = data.data;
-							var list = obj.comList;
+						if (data.code == 200) {
+							var obj = data.data.obj;
+							var lastObj = data.data.lastObj;
+							var nextObj = data.data.nextObj;
+							var list = data.data.comList;
 							//详情主体的渲染
 							var strHtml = '<header class="post_header"><h1 class="post_title ">' + obj.title + '</h1></header>' +
 								'<div class="blog-card"><div class="blog-card-thumbnail"><img width="150" height="150" src="' + obj.img +
 								'" class="blog-card-thumb-image wp-post-image" alt = "" /></div ><div class="blog-card-content"><div class="blog-card-excerpt">' +
-								obj.smallContent + '</div></div></div ><hr /><div class="post-body js-gallery">' + obj.content + '</div >' +
-								'<div class="meta split split--responsive cf"><div class="split__title"><time datetime="2017-10-02 01:44">' + formatDate(obj.createDate) + '</time>' +
+								obj.small_content + '</div></div></div ><hr /><div class="post-body js-gallery">' + obj.content + '</div >' +
+								'<div class="meta split split--responsive cf"><div class="split__title"><time datetime="2017-10-02 01:44">' + formatDate(obj.create_date) + '</time>' +
 								'<span class="">  ' + obj.typeName + '</span></div >' +
 								'<div id="social-share"><span class="entypo-share"><i class="iconfont">&#xe614;</i>分享</span></div>' +
 								'<div class="slide"><a class="btn-slide" title="switch down"><i class="iconfont">&#xe615;</i>折叠评论区</a></div></div >';
 							$(".post_content").append(strHtml);
 							//上下两篇文章的渲染
 							var nextHtml = '<div class="prev" data-aos="slide-right" data-aos-delay="1.5s"><div class="arrow"><i class="iconfont">&#xe625;</i></div >' +
-								'<div class="preview"><div class="pull-left featuredImg" style="background-image:url(' + obj.lastObj.img + ');"></div>' +
-								'<a class="pull-left preview-content bold" href="detail.html?id=' + obj.lastObj.id + '"><span>' + obj.lastObj.title + '</span></a></div></div>' +
+								'<div class="preview"><div class="pull-left featuredImg" style="background-image:url(' + lastObj.img + ');"></div>' +
+								'<a class="pull-left preview-content bold" href="detail.html?id=' + lastObj.id + '"><span>' + lastObj.title + '</span></a></div></div>' +
 								'<div class="next" data-aos="slide-left" data-aos-delay="1.5s"><div class="arrow"><i class="iconfont">&#xe623;</i></div><div class="preview">' +
-								'<div class="pull-right featuredImg" style="background-image:url(' + obj.nextObj.img + ');"></div>' +
-								'<a class="pull-right preview-content bold" href="detail.html?id=' + obj.nextObj.id + '"><span>' + obj.nextObj.title + '</span></a></div></div>';
+								'<div class="pull-right featuredImg" style="background-image:url(' + nextObj.img + ');"></div>' +
+								'<a class="pull-right preview-content bold" href="detail.html?id=' + nextObj.id + '"><span>' + nextObj.title + '</span></a></div></div>';
 							$("#NextPrevPosts").append(nextHtml);
 
 
@@ -389,15 +374,15 @@
 							var revHtml = '';
 							for (let res of list) {
 								revHtml += '<li class="comment even thread-even depth-1" id="li-comment-"><div id="comment-969" class="comment_body contents">' +
-									'<div class="profile" style="border-radius:50%;background-color:' + getColor() + ';width:50px;height:50px;text-align:center;line-height:50px;color:#ffffff;font-size:24px">' + res.nikeName.substring(0, 1) + '</div>' +
+									'<div class="profile" style="border-radius:50%;background-color:' + getColor() + ';width:50px;height:50px;text-align:center;line-height:50px;color:#ffffff;font-size:24px">' + res.nike_name.substring(0, 1) + '</div>' +
 									'<div class="main shadow"><div class="commentinfo"><section class="commeta"><div class="shang">' +
-									'<h4 class="author">' + res.nikeName + '</h4></div></section></div><div class="body">' + res.content + '</div >' +
-									'<div class="xia info"><span><time datetime="2018-03-09">' + formatDate(res.createTime) + '</time></span>' +
+									'<h4 class="author">' + res.nike_name + '</h4></div></section></div><div class="body">' + res.content + '</div >' +
+									'<div class="xia info"><span><time datetime="2018-03-09">' + formatDate(res.create_time) + '</time></span>' +
 									'</div></div></div></li> '
 							}
 							$("#ui-comment").append(revHtml);//添加评论信息
 						} else {
-							alert(data.message);
+							alert(data.msg);
 						}
 					},
 					error: function (e) {
@@ -408,36 +393,33 @@
 				//提交数据
 				$("#submit").click(function () {
 					var obj = {};
-					obj.aid = id;
-					obj.nikeName = $("#author").val();
+					obj.a_id = id;
+					obj.nike_name = $("#author").val();
 					obj.email = $("#email").val();
 					obj.phone = $("#phone").val();
 					obj.content = $("#comment").val();
-					if (!obj.nikeName) {
+					if (!obj.nike_name) {
 						alert("请输入昵称！")
-						return false;
+						return
 					}
 					if (!obj.content) {
 						alert("请输入评价内容！")
-						return false;
+						return
 					}
 					$.ajax({
-						url: url.baseUrl + "workArticle/sendRev",
+						url: url.baseUrl + "api/guestbook/add",
 						type: 'post',
 						contentType: 'application/json;charset=utf-8',
 						dateType: 'json',
 						async: false,
 						data: JSON.stringify(obj),
 						success: function (data) {
-							if(data.errno == 200){
-								alert("添加成功")
-							}else{
-								alert(data.message);
+							if(data.code != 200){
+								alert(data.msg);
 							}
 						},
 						error: function (e) {
 							console.log(e)
-							return false;
 						}
 					})
 				});
