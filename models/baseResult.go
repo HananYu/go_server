@@ -26,7 +26,7 @@ type BaseResult struct {
 }
 
 //--------对需要返回的信息进行赋值，并以结构体返回
-func RetunMsgFunc(code Code, data ...interface{}) *BaseResult { //...interface{}前面添加...表示传多个参数
+func RetunMsgFunc(code Code, data interface{}) *BaseResult {
 	rm := new(BaseResult)
 	rm.Code = code.Code
 	rm.Msg = code.Msg

@@ -4252,14 +4252,14 @@ UploadImg.prototype = {
                             return;
                         }
                     }
-                    if (!hooks.customInsert && result.errno != '0') {
+                    if (!hooks.customInsert && result.code != 200) {
                         // hook - fail
                         if (hooks.fail && typeof hooks.fail === 'function') {
                             hooks.fail(xhr, editor, result);
                         }
 
                         // 数据错误
-                        _this3._alert('上传图片失败', '上传图片返回结果错误，返回结果 errno=' + result.errno);
+                        _this3._alert('上传图片失败', '上传图片返回结果错误，返回结果=' + result.msg);
                     } else {
                         if (hooks.customInsert && typeof hooks.customInsert === 'function') {
                             // 使用者自定义插入方法
@@ -4267,9 +4267,9 @@ UploadImg.prototype = {
                         } else {
                             // 将图片插入编辑器
                             var data = result.data || [];
-                            data.forEach(function (link) {
-                                _this3.insertLinkImg(link);
-                            });
+                            // data.forEach(function (link) { //多文件上传方法，直接剔除掉
+                                _this3.insertLinkImg(data);
+                            // });
                         }
 
                         // hook - success

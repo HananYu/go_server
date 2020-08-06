@@ -4,8 +4,10 @@ import (
 	"gin/config"
 	"gin/models"
 	"github.com/gin-gonic/gin"
+	"github.com/satori/go.uuid"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -16,10 +18,12 @@ func UploadFile(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	//fmt.Println(file.Filename)
+	name := file.Filename
+	i := strings.LastIndex(name, ".") //含有sub字段的位置
+	name = strings.ReplaceAll(uuid.Must(uuid.NewV4(), err).String(), "-", "") + name[i:]
 	// 上传文件到指定的路径，保存的文件路径含有文件的名称
-	c.SaveUploadedFile(file, config.Save_Path_URL+file.Filename)
-	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, config.Service_URL+file.Filename))
+	c.SaveUploadedFile(file, config.Save_Path_URL+name)
+	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, config.Service_URL+name))
 }
 
 //保存文件接口
@@ -57,10 +61,7 @@ func GetArticleList(c *gin.Context) {
 		//设置当前页默认值
 		page.CurrentPage = config.Common_ONE
 	}
-
 	var arts []models.Article
-	config.Db.Table("work_article").Limit(page.PageSize).Offset((page.CurrentPage - config.Common_ONE) * page.PageSize).Find(&arts)
-
+	config.Db.Table("work_article").Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.Common_ONE) * page.PageSize).Find(&arts)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
-
 }

@@ -284,23 +284,29 @@
 			let currentPage = 1;
 			let pageSize = 5;
 			let time = 0;//设置默认的时间
+
+
+
+
+
 			//设置下拉刷新
 			$(function () {
 				// $("#content").empty();//清空DIV的内容
 				getlist(currentPage, pageSize);
 				$(window).scroll(function () {
 					if (getNumCode() === 0) {
-						if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+						// console.log("滚动条距离页面顶端位置" + $(window).scrollTop());
+						// console.log("当前可见窗口的高度" + $(window).height()); //当前可见窗口的高度
+						// console.log("整个页面的总高度" + $(document).height()); //整个页面的总高度
+						//添加100高度以防屏幕分辨率较低显示器出现页面误差导致不能翻页
+						if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
 							resetNumCode();
 							currentPage++;
-							// console.log('请求的页面' + currentPage);
+							console.log('请求的页面' + currentPage);
 							if (getlist(currentPage, pageSize)) {
 								currentPage--;
-								// console.log('最新的页面' + currentPage);
+								console.log('最新的页面' + currentPage);
 							}
-							// console.log("滚动条距离页面顶端位置" + $(window).scrollTop);
-							// console.log("整个页面的总高度" + $(document).height()); //整个页面的总高度
-							// console.log("当前可见窗口的高度" + $(window).height()); //当前可见窗口的高度
 						}
 					}
 				})
@@ -326,12 +332,14 @@
 					data: JSON.stringify(data),
 					success: function (data) {
 						if (data.code == 200) {
+							// let list=new Array()
 							let list = data.data;
 							if (list == '' || list == null || list.length == 0) {
 								flag = true;
 							} else {
 								let strHtml = "";//页面数据
-								for (let res in list) {
+								for (let res of list) {
+									// let res = list[i]
 									if (res.type == 0) {
 										//表示散文
 										strHtml += '<div class="post post-layout-list" data-aos="fade-up"><div class="status_list_item icon_kyubo">' +
@@ -378,9 +386,9 @@
 								}
 								$("#content").append(strHtml);
 							}
-
 						} else {
 							alert(data.msg);
+							flag = true;
 						}
 					},
 					error: function (e) {
