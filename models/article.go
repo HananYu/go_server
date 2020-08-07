@@ -36,3 +36,20 @@ type ArticleSim struct {
 	Img   string `json:"img"`
 	Title string `json:"title"`
 }
+
+//用作返回归档页面数据
+type ArticleRecordNum struct {
+	Id          int    `json:"id"`
+	Title       string `json:"title"`
+	CreateDate  int    `json:"createDate" gorm:"column:create_date"`
+	ReviewCount int    `json:"reviewCount" gorm:"column:reviewCount"`
+}
+
+//用作返回归档页面数据
+type ArticleRecord struct {
+	Id          int    `json:"id"`
+	Title       string `json:"title"`
+	YearM       string `json:"yearM"`
+	DateM       string `json:"dateM"`
+	ReviewCount int    `json:"reviewCount"`
+}

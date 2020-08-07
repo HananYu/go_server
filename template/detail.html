@@ -18,7 +18,7 @@
 		<div class="search-form__inner">
 			<div>
 				<div id="search-container" class="ajax_search">
-					<form method="get" id="searchform" action="">
+					<form method="get" id="searchform">
 						<div class="filter_container"><input type="text" value="" autocomplete="off"
 							placeholder="请输入" name="s" id="search-input" />
 							<ul id="search_filtered" class="search_filtered"></ul>
@@ -233,7 +233,7 @@
 						<div id="respond" class="comment-respond">
 							<h6 id="replytitle" class="comment-reply-title"><a rel="nofollow"
 									id="cancel-comment-reply-link" href="" style="display:none;">取消</a></h6>
-							<form id="commentform" class="clearfix">
+{{/*							<form id="commentform" action="" method="get" class="clearfix">*/}}
 								<div class="clearfix"></div>
 								<div class="author-info">
 									<input type="text" name="author" id="author" placeholder="昵  称 : " value=""
@@ -262,7 +262,7 @@
 											value="发送">发送</button>
 									</p>
 								</div>
-							</form>
+{{/*							</form>*/}}
 						</div>
 					</div>
 				</section>
@@ -414,7 +414,9 @@
 						async: false,
 						data: JSON.stringify(obj),
 						success: function (data) {
-							if(data.code != 200){
+							if(data.code == 200){
+								location.reload();//刷线当前页面,相当于F5
+							}else{
 								alert(data.msg);
 							}
 						},
