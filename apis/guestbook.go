@@ -1,12 +1,10 @@
 package apis
 
 import (
-	"fmt"
 	"gin/config"
 	"gin/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strings"
 	"time"
 )
 
@@ -22,9 +20,9 @@ func InsetGuestBook(c *gin.Context) {
 		return
 	}
 	//获取请求IP
-	loginip := strings.Split(c.Request.RemoteAddr, ":")[0]
-	fmt.Println(loginip)
-	book.Ip = loginip
+	//loginip := strings.Split(c.Request.RemoteAddr, ":")[0]
+	//fmt.Println(loginip)
+	//book.Ip = loginip
 	book.CreateTime = int(time.Now().Unix())
 	config.Db.Table("work_review").Create(&book)
 	c.JSON(http.StatusOK, models.SuccCode)

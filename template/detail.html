@@ -393,7 +393,7 @@
 				//提交数据
 				$("#submit").click(function () {
 					var obj = {};
-					obj.a_id = id;
+					obj.a_id =parseInt(id);
 					obj.nike_name = $("#author").val();
 					obj.email = $("#email").val();
 					obj.phone = $("#phone").val();
@@ -406,6 +406,7 @@
 						alert("请输入评价内容！")
 						return
 					}
+					console.log(obj)
 					$.ajax({
 						url: url.baseUrl + "api/guestbook/add",
 						type: 'post',
