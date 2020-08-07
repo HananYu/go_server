@@ -352,8 +352,8 @@
 							var strHtml = '<header class="post_header"><h1 class="post_title ">' + obj.title + '</h1></header>' +
 								'<div class="blog-card"><div class="blog-card-thumbnail"><img width="150" height="150" src="' + obj.img +
 								'" class="blog-card-thumb-image wp-post-image" alt = "" /></div ><div class="blog-card-content"><div class="blog-card-excerpt">' +
-								obj.small_content + '</div></div></div ><hr /><div class="post-body js-gallery">' + obj.content + '</div >' +
-								'<div class="meta split split--responsive cf"><div class="split__title"><time datetime="2017-10-02 01:44">' + formatDate(obj.create_date) + '</time>' +
+								obj.smallContent + '</div></div></div ><hr /><div class="post-body js-gallery">' + obj.content + '</div >' +
+								'<div class="meta split split--responsive cf"><div class="split__title"><time datetime="2017-10-02 01:44">' + formatDate(obj.createDate) + '</time>' +
 								'<span class="">  ' + obj.typeName + '</span></div >' +
 								'<div id="social-share"><span class="entypo-share"><i class="iconfont">&#xe614;</i>分享</span></div>' +
 								'<div class="slide"><a class="btn-slide" title="switch down"><i class="iconfont">&#xe615;</i>折叠评论区</a></div></div >';
@@ -374,10 +374,10 @@
 							var revHtml = '';
 							for (let res of list) {
 								revHtml += '<li class="comment even thread-even depth-1" id="li-comment-"><div id="comment-969" class="comment_body contents">' +
-									'<div class="profile" style="border-radius:50%;background-color:' + getColor() + ';width:50px;height:50px;text-align:center;line-height:50px;color:#ffffff;font-size:24px">' + res.nike_name.substring(0, 1) + '</div>' +
+									'<div class="profile" style="border-radius:50%;background-color:' + getColor() + ';width:50px;height:50px;text-align:center;line-height:50px;color:#ffffff;font-size:24px">' + res.nikeName.substring(0, 1) + '</div>' +
 									'<div class="main shadow"><div class="commentinfo"><section class="commeta"><div class="shang">' +
-									'<h4 class="author">' + res.nike_name + '</h4></div></section></div><div class="body">' + res.content + '</div >' +
-									'<div class="xia info"><span><time datetime="2018-03-09">' + formatDate(res.create_time) + '</time></span>' +
+									'<h4 class="author">' + res.nikeName + '</h4></div></section></div><div class="body">' + res.content + '</div >' +
+									'<div class="xia info"><span><time datetime="2018-03-09">' + formatDate(res.createTime) + '</time></span>' +
 									'</div></div></div></li> '
 							}
 							$("#ui-comment").append(revHtml);//添加评论信息
@@ -393,12 +393,12 @@
 				//提交数据
 				$("#submit").click(function () {
 					var obj = {};
-					obj.a_id =parseInt(id);
-					obj.nike_name = $("#author").val();
+					obj.aId =parseInt(id);
+					obj.nikeName = $("#author").val();
 					obj.email = $("#email").val();
 					obj.phone = $("#phone").val();
 					obj.content = $("#comment").val();
-					if (!obj.nike_name) {
+					if (!obj.nikeName) {
 						alert("请输入昵称！")
 						return
 					}
@@ -406,7 +406,6 @@
 						alert("请输入评价内容！")
 						return
 					}
-					console.log(obj)
 					$.ajax({
 						url: url.baseUrl + "api/guestbook/add",
 						type: 'post',

@@ -27,7 +27,7 @@ func UploadFile(c *gin.Context) {
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, config.Service_URL+name))
 }
 
-//保存文件接口
+//新增文章接口
 func InserTArticle(c *gin.Context) {
 	var article models.Article
 	err := c.BindJSON(&article)

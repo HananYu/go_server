@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+//新增留言
 func InsetGuestBook(c *gin.Context) {
 	var book models.GuestBook
 	err := c.BindJSON(&book)

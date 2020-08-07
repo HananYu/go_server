@@ -146,13 +146,13 @@
             let data = {};
             data.type = parseInt($('.div_input_type input[name="type"]:checked').val());
             data.title = $("#title").val();
-            data.small_content = $("#smallContent").val();
+            data.smallContent = $("#smallContent").val();
             data.img = $("#img_pic")[0].src;
             data.content = editor.txt.html();
             if (data.title == null || data.title == '') {
                 alert("请输入标题！");
                 return
-            } else if (data.small_content == null || data.small_content == '') {
+            } else if (data.smallContent == null || data.small_content == '') {
                 alert("请输入简介！");
                 return
             } else if (data.img == null || data.img == 'statics/images/jia.jpg' || data.img == '') {
@@ -162,7 +162,6 @@
                 alert("请输入内容！");
                 return
             }
-            console.log(JSON.stringify(data));
             $.ajax({
                 url: url.baseUrl + "api/article/add",
                 type: 'post',

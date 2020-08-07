@@ -286,8 +286,8 @@
                         for (let res of list) {
                             strHtml += '<div class="posts-list js-posts"><div class="archive-post"><div class="type"><div class="mask"><i class="iconfont">&#xe603;</i></div>' +
                                 '</div><h2 class="archive-title" style="color: #"><span><a href="detail.html?id=' + res.id + '">' + res.title + '</a></span>' +
-                                '<div class="post-time">' + formatDate(res.create_date) + '</div></h2><div class="post-category">' +
-                                '[ ' + res.typeName + ' ] ' + res.small_content + '</div></div></div> '
+                                '<div class="post-time">' + formatDate(res.createDate) + '</div></h2><div class="post-category">' +
+                                '[ ' + res.typeName + ' ] ' + res.smallContent + '</div></div></div> '
                         }
 
                         strHtml += '<div class="mt+"><div class="pagination js-pagination"><div class="js-next pagination__load">' +
