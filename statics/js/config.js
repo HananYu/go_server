@@ -97,4 +97,18 @@ function getColor(){
     }  
 return color;
 }
-  
+
+//邮箱校验
+function checkEmail(email){
+    if ( /^\w+@[a-z0-9]+\.[a-z]{2,4}$/.test(email)){
+        return false
+    }
+    return true
+}
+
+function checkPhone(phone){
+    if((/^1[3456789]\d{9}$/.test(phone))){
+        return false
+    }
+    return true
+}

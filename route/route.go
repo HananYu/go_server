@@ -24,12 +24,14 @@ func InitRouter() *gin.Engine {
 
 	//留言接口
 	router.POST("/api/guestbook/add", InsetGuestBook) //插入留言
+	router.GET("/api/guestbook/get", GetGuestBooks)   //获取留言
 	//归档页面接口
 	router.POST("/api/record/get", GetArticleRecords) //插入留言
 
 	router.GET("/user/fU", FindUser)
 
 	//网页跳转
+	router.GET("/", IndexHtml)
 	router.GET("/index", IndexHtml)
 	router.GET("/gustbook", GuestBookHtml)
 	router.GET("/article", ArticleHtml)

@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>Hanan_Yu.Liu</title>
+	<link rel="shortcut icon" type="image/x-icon" href="../statics/images/icon.png"/>
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<link rel="stylesheet" type="text/css" href="../statics/css/index.css" media="all" />
@@ -13,13 +14,13 @@
 
 <body class="home blog custom-background round-avatars">
 	<div class="Yarn_Background" style="background-image: url( ../statics/images/47fb3c_.jpg);"></div>
-	<form class="js-search search-form search-form--modal" method="get" action="search.html" role="search">
+	<form class="js-search search-form search-form--modal" method="get" action="search" role="search">
 		<div class="search-form__inner">
 			<div>
 				<div id="search-container" class="ajax_search">
 					<form method="get" id="searchform" action="">
 						<div class="filter_container"><input type="text" value="" autocomplete="off"
-								placeholder="请输入搜索标题" name="s" id="search-input" />
+								placeholder="请输入" name="s" id="search-input" />
 							<ul id="search_filtered" class="search_filtered"></ul>
 						</div>
 						<input type="submit" name="submit" id="searchsubmit" class="searchsubmit" value="" />
@@ -42,7 +43,7 @@
 							<ul id="primary-menu" class="menu">
 								<li id="menu-item-17"
 									class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-17">
-									<a href="index.html">首页</a>
+									<a href="index">首页</a>
 								</li>
 								<li id="menu-item-173"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-173">
@@ -50,33 +51,15 @@
 								</li>
 								<li id="menu-item-78"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78">
-									<a href="link.html">链接</a>
+									<a href="link">链接</a>
 								</li>
 								<li id="menu-item-252"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-252">
-									<a href="archives.html">归档</a>
-									<ul class="sub-menu">
-										<li id="menu-item-165"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-165">
-											<a href="javascript:void(0);">theme</a>
-										</li>
-										<li id="menu-item-163"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-163">
-											<a href="javascript:void(0);">Happen</a>
-										</li>
-										<li id="menu-item-924"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-924">
-											<a href="javascript:void(0);">WeWork</a>
-										</li>
-										<li id="menu-item-164"
-											class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-164">
-											<a href="javascript:void(0);">WordPress</a>
-										</li>
-									</ul>
+									<a href="archives">归档</a>
 								</li>
 								<li id="menu-item-57"
 									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57">
-									<a href="gustbook.html">留言</a>
+									<a href="gustbook">留言</a>
 								</li>
 							</ul>
 						</div>
@@ -91,7 +74,7 @@
 	</div>
 	<header id="masthead" class="overlay animated from-bottom" itemprop="brand">
 		<div class="site-branding text-center">
-			<a href="index.html">
+			<a href="index">
 				<figure>
 					<img class="custom-logo avatar" src="../statics/images/omikron1.png" />
 				</figure>
@@ -140,7 +123,8 @@
 
 					<div class="meta split split--responsive cf" style="display: block;">
 
-						<div id="social-share"><span class="entypo-share"><i class="iconfont">&#xe614;</i>分享</span>
+						<div id="social-share">
+{{/*							<span class="entypo-share"><i class="iconfont">&#xe614;</i>分享</span>*/}}
 						</div>
 						<div class="slide">
 							<a class="btn-slide" title="switch down"><i class="iconfont">&#xe615;</i>折叠评论区</a>
@@ -298,25 +282,25 @@
 							</li> -->
 							<!-- #comment-## -->
 						</ul>
-						<!-- <nav id="comments-navi">
-							<a class="prev page-numbers" href="">
-								<</a> <a class='page-numbers' href='#'>1
-							</a>
-							<span class="page-numbers dots">&hellip;</span>
-							<a class='page-numbers' href='#'>15</a>
-							<a class='page-numbers' href='#'>16</a>
-							<span aria-current='page' class='page-numbers current'>17</span></nav> -->
+						<nav id="comments-navi">
+{{/*							<a class="prev page-numbers" href=""><</a>*/}}
+{{/*							<a class='page-numbers current' href=''>1</a>*/}}
+{{/*							<span class="page-numbers dots">&hellip;</span>*/}}
+{{/*							<a class='page-numbers' href='#'>15</a>*/}}
+{{/*							<a class='page-numbers' href='#'>16</a>*/}}
+{{/*							<span aria-current='page' class='page-numbers'>17</span>*/}}
+						</nav>
 						<div id="respond" class="comment-respond">
 							<h6 id="replytitle" class="comment-reply-title"><a rel="nofollow"
 									id="cancel-comment-reply-link" href="" style="display:none;">取消</a></h6>
-							<form action="#" method="post" id="commentform" class="clearfix">
+{{/*							<form action="#" method="post" id="commentform" class="clearfix">*/}}
 								<div class="clearfix"></div>
 								<div class="author-info">
 									<input type="text" name="author" id="author" placeholder="昵  称 : " value=""
 										tabindex="1" title="Name (required)" />
-									<input type="text" name="email" id="email" placeholder="邮  箱 : " value=""
+									<input type="text" name="email" id="email" placeholder="邮  箱 :可不填 " value=""
 										tabindex="2" title="E-mail(will not be published) required" />
-									<input type="text" name="phone" id="phone" placeholder="电  话 : " value=""
+									<input type="text" name="phone" id="phone" placeholder="手  机 :可不填 " value=""
 										tabindex="3" title="Website" />
 								</div>
 								<div class="clearfix"></div>
@@ -333,12 +317,12 @@
 									<p class="input-row">
 										<i class="row-icon"></i>
 										<textarea class="text_area" rows="3" cols="80" name="comment" id="comment"
-											tabindex="4" placeholder="你不说两句吗？(°∀°)ﾉ……"></textarea>
+											tabindex="4" placeholder="留言......"></textarea>
 										<button name="submit" class="button" id="submit" tabindex="5"
 											value="发送">发送</button>
 									</p>
 								</div>
-							</form>
+{{/*							</form>*/}}
 						</div>
 					</div>
 				</section>
@@ -373,16 +357,17 @@
 		<script type='text/javascript' src='../statics/js/aos.js'></script>
 		<script type="text/javascript" src="../statics/js/config.js"></script>
 		<script>
+			let currentPage = 1; //当前页数
 			$(function () {
 				$.ajax({
-					url: url.baseUrl + "workArticle/getGuest",
+					url: url.baseUrl + "api/guestbook/get?currentPage=" + currentPage ,
 					type: 'get',
 					contentType: 'application/json;charset=utf-8',
 					dateType: 'json',
 					async: false,
 					success: function (data) {
-						if (data.errno == 200) {
-							let list = data.data;
+						if (data.code == 200) {
+							let list = data.data.list;
 							//评论区的渲染''
 							$("#comments-list-title").append('<span>' + list.length + '</span> 条留言 '); //评论数量的提交
 							var revHtml = '';
@@ -395,10 +380,20 @@
 									'</div></div></div></li> '
 							}
 							$("#ui-comment").append(revHtml);//添加评论信息
+							let maxPage = data.data.maxPage
+							revHtml = ''
+							if (maxPage <= 5){
+								for (let i=1;i<=maxPage;i++){
+									if (currentPage == i){
+										revHtml += '<a class="prev page-numbers current" href=guestbook?currentPage="'+ i +'">i</a>'
+									}
+									revHtml += '<a class="prev page-numbers" href=guestbook?currentPage="'+ i +'">i</a>'
+								}
+							}
 						}
 					},
 					error: function (e) {
-						console.log(e)
+						// console.log(e)
 					}
 				})
 
@@ -418,23 +413,34 @@
 						alert("请输入评价内容！")
 						return false;
 					}
+					if (obj.email){
+						if (checkEmail(obj.email)){
+							alert("请输入正确的邮箱！")
+							return
+						}
+					}
+					if (obj.phone){
+						if (checkPhone(obj.phone)){
+							alert("请输入正确的手机号！")
+							return
+						}
+					}
 					$.ajax({
-						url: url.baseUrl + "workArticle/sendRev",
+						url: url.baseUrl + "api/guestbook/add",
 						type: 'post',
 						contentType: 'application/json;charset=utf-8',
 						dateType: 'json',
 						async: false,
 						data: JSON.stringify(obj),
 						success: function (data) {
-							if (data.errno == 200) {
-								alert("添加成功")
-							} else {
-								alert(data.message);
+							if(data.code == 200){
+								location.reload();//刷线当前页面,相当于F5
+							}else{
+								alert(data.msg);
 							}
 						},
 						error: function (e) {
-							console.log(e)
-							return false;
+							// console.log(e)
 						}
 					})
 				});

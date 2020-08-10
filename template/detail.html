@@ -75,7 +75,7 @@
 	<header id="masthead" class="overlay animated from-bottom" itemprop="brand" itemscope
 		itemtype="http://schema.org/Brand">
 		<div class="site-branding text-center">
-			<a href="index.html">
+			<a href="index">
 				<figure>
 					<img class="custom-logo avatar" src="../statics/images/omikron1.png" />
 				</figure>
@@ -238,9 +238,9 @@
 								<div class="author-info">
 									<input type="text" name="author" id="author" placeholder="昵  称 : " value=""
 										tabindex="1" title="Name (required)" />
-									<input type="text" name="email" id="email" placeholder="邮  箱 : " value=""
+									<input type="text" name="email" id="email" placeholder="邮  箱 : 可不填" value=""
 										tabindex="2" title="E-mail(will not be published) required" />
-									<input type="text" name="phone" id="phone" placeholder="电  话 : " value=""
+									<input type="text" name="phone" id="phone" placeholder="手  机 : 可不填" value=""
 										tabindex="3" title="Website" />
 								</div>
 								<div class="clearfix"></div>
@@ -257,7 +257,7 @@
 									<p class="input-row">
 										<i class="row-icon"></i>
 										<textarea class="text_area" rows="3" cols="80" name="comment" id="comment"
-											tabindex="4" placeholder="你不说两句吗？(°∀°)ﾉ……"></textarea>
+											tabindex="4" placeholder="留言......"></textarea>
 										<button name="submit" class="button" id="submit" tabindex="5"
 											value="发送">发送</button>
 									</p>
@@ -355,7 +355,7 @@
 								obj.smallContent + '</div></div></div ><hr /><div class="post-body js-gallery">' + obj.content + '</div >' +
 								'<div class="meta split split--responsive cf"><div class="split__title"><time datetime="2017-10-02 01:44">' + formatDate(obj.createDate) + '</time>' +
 								'<span class="">  ' + obj.typeName + '</span></div >' +
-								'<div id="social-share"><span class="entypo-share"><i class="iconfont">&#xe614;</i>分享</span></div>' +
+								'<div id="social-share"></div>' +
 								'<div class="slide"><a class="btn-slide" title="switch down"><i class="iconfont">&#xe615;</i>折叠评论区</a></div></div >';
 							$(".post_content").append(strHtml);
 							//上下两篇文章的渲染
@@ -406,6 +406,18 @@
 						alert("请输入评价内容！")
 						return
 					}
+					if (obj.email){
+						if (checkEmail(obj.email)){
+							alert("请输入正确的邮箱！")
+							return
+						}
+					}
+					if (obj.phone){
+						if (checkPhone(obj.phone)){
+							alert("请输入正确的手机号！")
+							return
+						}
+					}
 					$.ajax({
 						url: url.baseUrl + "api/guestbook/add",
 						type: 'post',
@@ -421,7 +433,7 @@
 							}
 						},
 						error: function (e) {
-							console.log(e)
+							// console.log(e)
 						}
 					})
 				});

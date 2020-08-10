@@ -35,8 +35,9 @@ func InserTArticle(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	if article.Type == config.Common_ZERO || article.Title == "" {
-
+	if article.Title == "" || article.SmallContent == "" || article.Content == "" {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
 	}
 	_, err = strconv.Atoi(c.GetHeader(config.Token_USERID)) // 用户ID
 	if err != nil {
