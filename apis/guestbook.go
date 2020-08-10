@@ -52,18 +52,19 @@ func GetGuestBooks(c *gin.Context) {
 		currentPage = config.Common_ONE
 	}
 	//留言默认每页请求为5条数据
-	returnMap := make(map[string]interface{}, config.Common_TWO)
+	returnMap := make(map[string]interface{}, config.Common_THREE)
 	var books []models.GuestBook
 	config.Db.Table("work_review").Order("create_time desc").Where("a_id = ?", id).Limit(config.Common_FIVE).Offset((currentPage - config.Common_ONE) * config.Common_FIVE).Find(&books)
 	returnMap["list"] = books
-	var maxSize int
-	config.Db.Raw("select count(1) from work_review where id = ?", id).Scan(&maxSize)
+	var maxSize int //必须使用new关键字，不然就会错误 unsupported destination, should be slice or struct
+	config.Db.Table("work_review").Where("a_id = ?", id).Count(&maxSize)
 	maxPage := 0
 	if maxSize%config.Common_FIVE == config.Common_ZERO {
 		maxPage = maxSize / config.Common_FIVE
 	} else {
 		maxPage = maxSize/config.Common_FIVE + config.Common_ONE
 	}
+	returnMap["maxSize"] = maxSize
 	returnMap["maxPage"] = maxPage
-	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, books))
+	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, returnMap))
 }
