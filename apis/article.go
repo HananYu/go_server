@@ -100,6 +100,12 @@ func DetailArticleList(c *gin.Context) {
 	returnMap := make(map[string]interface{}, config.Common_FOUR)
 	var art models.ArticleName
 	config.Db.Table("work_article").Where("id = ?", id).First(&art)
+	if art.Type == config.Common_ZERO {
+		art.TypeName = "随笔"
+	}
+	if art.Type == config.Common_ONE {
+		art.TypeName = "随记"
+	}
 	returnMap["obj"] = art //当前文章详情
 	var lastObj models.ArticleSim
 	config.Db.Raw("select id, img,  title from work_article where id =(select id from work_article where id < ? order by id desc limit 1)", id).Scan(&lastObj)
@@ -110,5 +116,7 @@ func DetailArticleList(c *gin.Context) {
 	var books []models.GuestBook
 	config.Db.Table("work_review").Order("create_time desc").Where("a_id = ?", id).Find(&books)
 	returnMap["comList"] = books //文章的评论
+	//更新访问量+1
+	config.Db.Exec("UPDATE work_article SET read_num = read_num + 1 where id = ?", id)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, returnMap))
 }
