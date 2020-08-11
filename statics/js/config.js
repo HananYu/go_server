@@ -1,5 +1,6 @@
 var url = {
-	baseUrl: "http://localhost:8000/",
+	// baseUrl: "https://www.hananyu.cn/",
+    baseUrl: "http://localhost:8000/",
 }
 
 /**

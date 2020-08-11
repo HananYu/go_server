@@ -21,7 +21,7 @@ func MD5(data []byte) string {
 }
 
 func CreaToken(id int, salt string) string {
-	return strings.ToLower(MD5([]byte(string(id)+salt+TokenSalt)))
+	return strings.ToLower(MD5([]byte(string(id) + salt + TokenSalt)))
 }
 
 //生成随机字符串

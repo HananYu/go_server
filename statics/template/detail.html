@@ -5,15 +5,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>Hanan_Yu.Liu</title>
-	<link rel="shortcut icon" type="image/x-icon" href="../statics/images/icon.png"/>
+	<link rel="shortcut icon" type="image/x-icon" href="/statics/images/icon.png"/>
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-	<link rel="stylesheet" type="text/css" href="../statics/css/index.css" media="all" />
-	<link rel="stylesheet" type="text/css" href="../statics/css/detail.css" />
+	<link rel="stylesheet" type="text/css" href="/statics/css/index.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="/statics/css/detail.css" />
 </head>
 
 <body class="home blog custom-background round-avatars" itemscope itemtype="http://schema.org/Organization">
-	<div class="Yarn_Background" style="background-image: url( ../statics/images/47fb3c_.jpg);"></div>
+	<div class="Yarn_Background" style="background-image: url(/statics/images/47fb3c_.jpg);"></div>
 	<form class="js-search search-form search-form--modal" method="get" action="search" role="search">
 		<div class="search-form__inner">
 			<div>
@@ -77,7 +77,7 @@
 		<div class="site-branding text-center">
 			<a href="index">
 				<figure>
-					<img class="custom-logo avatar" src="../statics/images/omikron1.png" />
+					<img class="custom-logo avatar" src=/statics/images/omikron1.png />
 				</figure>
 			</a>
 			<h3 class="blog-description">
@@ -251,7 +251,7 @@
 								<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="87" /></p>
 								<div class="comment-form-info">
 									<div class="real-time-gravatar"> <img id="real-time-gravatar"
-											src="../statics/images/9cc50a9e422fb1c89aebafeb959cef7a.jpg"
+											src="/statics/images/guest.jpeg"
 											alt="gravatar头像" />
 									</div>
 									<p class="input-row">
@@ -277,7 +277,7 @@
 
 	<div class="p-header">
 		<figure class="p-image"
-			style="background-image: url(../statics/images/47fb3c_9afed6c259f94589881bd55376206366mv2_d_3840_5784_s_4_2.jpg);">
+			style="background-image: url(/statics/images/47fb3c_9afed6c259f94589881bd55376206366mv2_d_3840_5784_s_4_2.jpg);">
 		</figure>
 	</div>
 	<div class="navpost-part">
@@ -316,15 +316,15 @@
 				<path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
 			</svg>
 		</div>
-		<div class="cr">&copy;2019. Design by <a href="">Hanan_Yu.Liu</a></div>
-		<script type='text/javascript' src='../statics/js/jquery.min.js'></script>
-		<script type='text/javascript' src='../statics/js/plugins.js'></script>
-		<script type='text/javascript' src='../statics/js/script.js'></script>
-		<script type='text/javascript' src='../statics/js/particles.js'></script>
-		<script type='text/javascript' src='../statics/js/aos.js'></script>
-		<script type='text/javascript' src='../statics/js/prism.js'></script>
-		<script type='text/javascript' src='../statics/js/gravatar.js'></script>
-		<script type="text/javascript" src="../statics/js/config.js"></script>
+		<div class="cr">&copy;2020. Design by <a href="">Hanan_Yu.Liu</a></div>
+		<script type='text/javascript' src='/statics/js/jquery.min.js'></script>
+		<script type='text/javascript' src='/statics/js/plugins.js'></script>
+		<script type='text/javascript' src='/statics/js/script.js'></script>
+		<script type='text/javascript' src='/statics/js/particles.js'></script>
+		<script type='text/javascript' src='/statics/js/aos.js'></script>
+		<script type='text/javascript' src='/statics/js/prism.js'></script>
+		<script type='text/javascript' src='/statics/js/gravatar.js'></script>
+		<script type="text/javascript" src="/statics/js/config.js"></script>
 		<script>
 			window.onscroll = function () {
 				var scrollTop = document.body.scrollTop;
@@ -361,10 +361,10 @@
 							//上下两篇文章的渲染
 							var nextHtml = '<div class="prev" data-aos="slide-right" data-aos-delay="1.5s"><div class="arrow"><i class="iconfont">&#xe625;</i></div >' +
 								'<div class="preview"><div class="pull-left featuredImg" style="background-image:url(' + lastObj.img + ');"></div>' +
-								'<a class="pull-left preview-content bold" href="detail.html?id=' + lastObj.id + '"><span>' + lastObj.title + '</span></a></div></div>' +
+								'<a class="pull-left preview-content bold" href="detail?id=' + lastObj.id + '"><span>' + lastObj.title + '</span></a></div></div>' +
 								'<div class="next" data-aos="slide-left" data-aos-delay="1.5s"><div class="arrow"><i class="iconfont">&#xe623;</i></div><div class="preview">' +
 								'<div class="pull-right featuredImg" style="background-image:url(' + nextObj.img + ');"></div>' +
-								'<a class="pull-right preview-content bold" href="detail.html?id=' + nextObj.id + '"><span>' + nextObj.title + '</span></a></div></div>';
+								'<a class="pull-right preview-content bold" href="detail?id=' + nextObj.id + '"><span>' + nextObj.title + '</span></a></div></div>';
 							$("#NextPrevPosts").append(nextHtml);
 
 

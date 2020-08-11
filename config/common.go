@@ -1,9 +1,13 @@
 package config
 
 const (
-	//系统设置
+	//系统设置 开发
 	Save_Path_URL string = "F:/Temp/"                         //文件保存路径
 	Service_URL   string = "http://192.168.99.198:8000/file/" //文件访问地址
+
+	//系统设置 上线
+	//Save_Path_URL string = "/home/temp/"                         //文件保存路径
+	//Service_URL   string = "https://www.hananyu.cn/file/" //文件访问地址
 
 	//token常量
 	Token_USERID string = "userId"

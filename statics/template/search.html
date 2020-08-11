@@ -5,14 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Hanan_Yu.Liu</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../statics/images/icon.png"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/statics/images/icon.png"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <link rel="stylesheet" type="text/css" href="../statics/css/index.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="/statics/css/index.css" media="all"/>
 </head>
 
 <body class="home blog custom-background round-avatars">
-<div class="Yarn_Background" style="background-image: url(../statics/images/47fb3c_.jpg);"></div>
+<div class="Yarn_Background" style="background-image: url(/statics/images/47fb3c_.jpg);"></div>
 <form class="js-search search-form search-form--modal" role="search">
     <div class="search-form__inner">
         <div>
@@ -75,7 +75,7 @@
     <div class="site-branding text-center">
         <a href="index.html">
             <figure>
-                <img class="custom-logo avatar" src="../statics/images/omikron1.png"/>
+                <img class="custom-logo avatar" src="/statics/images/omikron1.png"/>
             </figure>
         </a>
         <h3 class="blog-description">
@@ -260,12 +260,12 @@
             </li>
         </div> -->
     <div class="cr">&copy;2020. Design by <a href="">Hanan_Yu.Liu</a></div>
-    <script type='text/javascript' src='../statics/js/jquery.min.js'></script>
-    <script type='text/javascript' src='../statics/js/plugins.js'></script>
-    <script type='text/javascript' src='../statics/js/script.js'></script>
-    <script type='text/javascript' src='../statics/js/particles.js'></script>
-    <script type='text/javascript' src='../statics/js/aos.js'></script>
-    <script type="text/javascript" src="../statics/js/config.js"></script>
+    <script type='text/javascript' src='/statics/js/jquery.min.js'></script>
+    <script type='text/javascript' src='/statics/js/plugins.js'></script>
+    <script type='text/javascript' src='/statics/js/script.js'></script>
+    <script type='text/javascript' src='/statics/js/particles.js'></script>
+    <script type='text/javascript' src='/statics/js/aos.js'></script>
+    <script type="text/javascript" src="/statics/js/config.js"></script>
     <script>
         $(function () {
             var s = decodeURI((window.location.href).split('?')[1].split('=')[1]);
@@ -285,7 +285,7 @@
                             '<a href="">首页</a> &raquo; 搜索结果 &raquo; ' + str + '</div>';
                         for (let res of list) {
                             strHtml += '<div class="posts-list js-posts"><div class="archive-post"><div class="type"><div class="mask"><i class="iconfont">&#xe603;</i></div>' +
-                                '</div><h2 class="archive-title" style="color: #"><span><a href="detail.html?id=' + res.id + '">' + res.title + '</a></span>' +
+                                '</div><h2 class="archive-title" style="color: #"><span><a href=' + res.id + '"detail.html?id=">' + res.title + '</a></span>' +
                                 '<div class="post-time">' + formatDate(res.createDate) + '</div></h2><div class="post-category">' +
                                 '[ ' + res.typeName + ' ] ' + res.smallContent + '</div></div></div> '
                         }

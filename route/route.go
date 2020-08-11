@@ -42,9 +42,11 @@ func InitRouter() *gin.Engine {
 	router.GET("/update", UpdateHtml)
 
 	//静态资源，放置在拦截器之前不会对静态资源进行拦截
-	router.LoadHTMLGlob("template/*")
+	router.LoadHTMLGlob("statics/template/*")
 	router.Static("statics", "./statics").Static("file", "F:/Temp/") // 启动静态文件服务
-	//http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))// 启动静态文件服务
+	//router.Static("statics", "./statics").Static("file", "/home/temp/") // 启动静态文件服务
+
+	//http.Handle("/statics/", http.StripPrefix("/statics/", http.FileServer(http.Dir("statics"))))// 启动静态文件服务
 
 	//以下的接口，都使用Authorize()中间件身份验证
 	router.Use(Authorize())
