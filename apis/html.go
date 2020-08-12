@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+func LoginHtml(c *gin.Context) {
+	c.HTML(http.StatusOK, "login.html", "")
+}
+
 func IndexHtml(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", "")
 }

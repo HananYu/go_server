@@ -32,6 +32,7 @@ func InitRouter() *gin.Engine {
 
 	//网页跳转
 	router.GET("/", IndexHtml)
+	router.GET("/login", LoginHtml)
 	router.GET("/index", IndexHtml)
 	router.GET("/gustbook", GuestBookHtml)
 	router.GET("/article", ArticleHtml)
@@ -50,7 +51,7 @@ func InitRouter() *gin.Engine {
 
 	//以下的接口，都使用Authorize()中间件身份验证
 	router.Use(Authorize())
-	router.GET("/getH", GetHttp)
+	router.GET("/api/getH", GetHttp) //用于校验用户token
 
 	return router
 }

@@ -1,12 +1,10 @@
 package apis
 
 import (
-	"fmt"
 	"gin/config"
 	"gin/models"
 	"gin/utils"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -77,16 +75,6 @@ func Login(c *gin.Context) {
 }
 
 func GetHttp(c *gin.Context) {
-	rsp, err := http.Get("http://www.wh.ccoo.cn/tieba/today-9-1-1.html")
-	if err != nil {
-		// 处理异常
-		fmt.Println("请求错误")
-		return
-	}
-	defer rsp.Body.Close()
-	body, err := ioutil.ReadAll(rsp.Body) // 读取Body
-	//c.HTML(http.StatusOK, string(body), "")
-	//fmt.Println(string(body))
-	//html,_ := utils.GbkToUtf8(body)
-	c.JSON(http.StatusOK, string(body))
+	//如果进入表示用户数据校验正确，直接返回通过
+	c.JSON(http.StatusOK, models.SuccCode)
 }

@@ -1,21 +1,29 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="zh">
+
 <head>
-    <meta charset="UTF-8">
-    <title>内容页面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Hanan_Yu.Liu</title>
     <link rel="shortcut icon" type="image/x-icon" href="/statics/images/icon.png"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <link rel="stylesheet" type="text/css" href="/statics/css/index.css" media="all"/>
     <style type="text/css">
-        body {
-            padding: 0;
-            margin: 0;
-            width: 100%;
+        /*body {*/
+        /*    padding: 0;*/
+        /*    margin: 0;*/
+        /*    width: 100%;*/
+        /*}*/
+        #main {
+            padding: 30px 10%;
         }
 
         .div_input {
             font-size: 18px;
             width: 100%;
             height: 40px;
-            padding: 20px 10px 0 10px;
+            margin: 20px 10px 0 10px;
         }
 
         .div_input span {
@@ -24,15 +32,17 @@
         }
 
         .div_input input {
-            width: 90%;
-            border: 0;
-            border-bottom: 1px solid black;
-            padding-left: 5px;
+            width: 30%;
+            min-width: 200px;
+            height: 40px;
+            border: 1px solid #EDEAEA;
+            padding-left: 20px;
+            border-radius: 8px;
+            font-size: 14px;
         }
 
         .div_input input:focus {
-            outline: none;
-
+            border: 1px solid #E88888;
         }
 
         .div_input_type {
@@ -46,7 +56,7 @@
         .div_input_img {
             font-size: 18px;
             width: 100%;
-            height: 100px;
+            height: 120px;
             padding: 20px 10px 0 10px;
             font-weight: bold;
         }
@@ -64,124 +74,273 @@
         }
 
         #editor {
-            width: 100%;
+            width: 80%;
+            min-width: 300px;
             padding: 20px 10px 0 10px;
         }
 
         .w-e-text-container {
-            height: 700px !important;
+            height: 300px !important;
+        }
+
+        #submit {
+            background-color: #E88888 !important;
+            margin: 10px 20px;
+            width: 100px;
+            border-radius: 10px;
+            line-height: 1px;
+            height: 30px;
         }
     </style>
 </head>
-<body>
-<div class="div_input_type">
-    <span>类型：</span>
-    <input type="radio" name="type" value="0" checked="checked"/>随笔
-    <input type="radio" name="type" value="1"/>随记
-{{/*    <input type="radio" name="type" value="2"/>其它*/}}
+
+<body class="home blog custom-background round-avatars">
+<div class="Yarn_Background" style="background-image: url(/statics/images/47fb3c_.jpg);"></div>
+<form class="js-search search-form search-form--modal" method="get" action="search" role="search">
+    <div class="search-form__inner">
+        <div>
+            <div id="search-container" class="ajax_search">
+                <form method="get" id="searchform" action="">
+                    <div class="filter_container"><input type="text" value="" autocomplete="off"
+                                                         placeholder="请输入" name="s" id="search-input"/>
+                        <ul id="search_filtered" class="search_filtered"></ul>
+                    </div>
+                    <input type="submit" name="submit" id="searchsubmit" class="searchsubmit" value=""/>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="navi" data-aos="fade-down">
+    <div class="bt-nav">
+        <div class="line line1"></div>
+        <div class="line line2"></div>
+        <div class="line line3"></div>
+    </div>
+    <div class="navbar animated fadeInRight">
+        <div class="inner">
+            <nav id="site-navigation" class="main-navigation">
+                <div id="main-menu" class="main-menu-container">
+                    <div class="menu-menu-container">
+                        <ul id="primary-menu" class="menu">
+                            <li id="menu-item-17"
+                                class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-17">
+                                <a href="index">首页</a>
+                            </li>
+                            <li id="menu-item-173"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-173">
+                                <a href="javascript:void(0);">更新</a>
+                            </li>
+                            <li id="menu-item-78"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78">
+                                <a href="link">链接</a>
+                            </li>
+                            <li id="menu-item-252"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-252">
+                                <a href="archives">归档</a>
+                            </li>
+                            <li id="menu-item-57"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57">
+                                <a href="gustbook">留言</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- #site-navigation -->
+        </div>
+    </div>
 </div>
-<div class="div_input">
-    <span>标题：</span>
-    <input type="text" id="title" placeholder="请输入标题"/>
+<div class="hebin" data-aos="fade-down">
+    <i class=" js-toggle-search iconfont">&#xe60e;</i>
 </div>
-<div class="div_input">
-    <span>简介：</span>
-    <input type="text" id="smallContent" placeholder="请输入简介"/>
-</div>
-<div class="div_input_img">
-    <span>封面：</span>
-    <input id="img" title="点击插入封面" type="file" accept="image/gif,image/jpeg,image/x-png" multiple="multiple"/>
-    <img id="img_pic" src="/statics/images/jia.jpg"/>
-</div>
-<!-- 富文本编辑器 -->
-<div id="editor">
-    <p>请输入内容......</p>
+<header id="masthead" class="overlay animated from-bottom" itemprop="brand">
+    <div class="site-branding text-center">
+        <a href="index">
+            <figure>
+                <img class="custom-logo avatar" src="/statics/images/omikron1.png"/>
+            </figure>
+        </a>
+        <h3 class="blog-description">
+            <p>Hanan_Yu.Liu</p>
+        </h3>
+    </div>
+    <!-- .site-branding -->
+    <div class="decor-part">
+        <div id="particles-js"></div>
+    </div>
+    <div class="animation-header">
+        <div class="decor-wrapper">
+            <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1"
+                 viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+                <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+                <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+                <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+            </svg>
+        </div>
+    </div>
+</header>
+<div id="main" class="content">
+    <div class="div_input_type">
+        <span>类型：</span>
+        <input type="radio" name="type" value="0" checked="checked"/>随笔
+        <input type="radio" name="type" value="1"/>随记
+        {{/*    <input type="radio" name="type" value="2"/>其它*/}}
+    </div>
+    <div class="div_input">
+        <span>标题：</span>
+        <input type="text" id="title" placeholder="请输入标题"/>
+    </div>
+    <div class="div_input">
+        <span>简介：</span>
+        <input type="text" id="smallContent" placeholder="请输入简介"/>
+    </div>
+    <div class="div_input_img">
+        <span>封面：</span>
+        <input id="img" title="点击插入封面" type="file" accept="image/gif,image/jpeg,image/x-png" multiple="multiple"/>
+        <img id="img_pic" src="/statics/images/jia.jpg"/>
+    </div>
+    <!-- 富文本编辑器 -->
+    <div id="editor">
+        <p>请输入内容......</p>
+    </div>
+
+    <button id="submit">提交</button>
 </div>
 
-<button id="submit">提交</button>
+<footer id="footer" class="overlay animated from-top">
+    <div class="decor-wrapper">
+        <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1"
+             viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+    <div class="cr">
+        &copy;2020. Design by <a href="">Hanan_Yu.Liu</a>
+    </div>
+    <script type='text/javascript' src='/statics/js/jquery.min.js'></script>
+    <script type='text/javascript' src='/statics/js/plugins.js'></script>
+    <script type='text/javascript' src='/statics/js/script.js'></script>
+    <script type='text/javascript' src='/statics/js/particles.js'></script>
+    <script type='text/javascript' src='/statics/js/aos.js'></script>
+    <script type="text/javascript" src="/statics/js/wangEditor.js"></script>
+    <script type="text/javascript" src="/statics/js/config.js"></script>
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#editor')
+        // 或者 var editor = new E( document.getElementById('editor') )
 
-<!-- 注意， 只需要引用 JS，无需引用任何 CSS ！！！-->
-<script type="text/javascript" src="/statics/js/jquery.min.js"></script>
-<script type="text/javascript" src="/statics/js/wangEditor.js"></script>
-<script type="text/javascript" src="/statics/js/config.js"></script>
-<script type="text/javascript">
-    var E = window.wangEditor
-    var editor = new E('#editor')
-    // 或者 var editor = new E( document.getElementById('editor') )
+        // editor.customConfig.showLinkImg = false  // 隐藏“网络图片”tab
+        editor.customConfig.uploadFileName = 'file'
+        editor.customConfig.uploadImgServer = url.baseUrl + 'api/basic/upload'//官方文档上写的是服务器地址，也就是上传图片的方法名
+        editor.customConfig.debug = true
+        editor.create()
 
-    // editor.customConfig.showLinkImg = false  // 隐藏“网络图片”tab
-    editor.customConfig.uploadFileName = 'file'
-    editor.customConfig.uploadImgServer = url.baseUrl + 'api/basic/upload'//官方文档上写的是服务器地址，也就是上传图片的方法名
-    editor.customConfig.debug = true
-    editor.create()
-
-    $(function () {
-        // 监视封面更改
-        $("#img").change(function () {
-            const formData = new FormData();
-            formData.append("file", this.files[0]);
+        $(function () {
+            // console.log('userId-------'+localStorage.getItem('userId'))
+            // console.log('token-------'+localStorage.getItem('token'))
+            // console.log('salt-------'+localStorage.getItem('salt'))
             $.ajax({
-                url: url.baseUrl + "api/basic/upload",
-                type: 'post',
-                enctype: 'multipart/form-data',
-                processData: false,
-                contentType: false,
-                cache: false,
-                data: formData,
-                success: function (data) {
-                    console.log(data)
-                    if (data.code == 200) {
-                        $("#img_pic").attr('src', data.data);
-                    } else {
-                        alert(data.msg);
-                    }
-                },
-				fail: function (err) {
-					console.log(err)
-				}
-            })
-        });
-
-        $("#submit").on('click', function () {
-            let data = {};
-            data.type = parseInt($('.div_input_type input[name="type"]:checked').val());
-            data.title = $("#title").val();
-            data.smallContent = $("#smallContent").val();
-            data.img = $("#img_pic")[0].src;
-            data.content = editor.txt.html();
-            if (data.title == null || data.title == '') {
-                alert("请输入标题！");
-                return
-            } else if (data.smallContent == null || data.small_content == '') {
-                alert("请输入简介！");
-                return
-            } else if (data.img == null || data.img == 'statics/images/jia.jpg' || data.img == '') {
-                alert("请输入封面！");
-                return
-            } else if (data.content == null || data.content == '' || data.content == '请输入内容......') {
-                alert("请输入内容！");
-                return
-            }
-            $.ajax({
-                url: url.baseUrl + "api/article/add",
-                type: 'post',
+                url: url.baseUrl + "api/getH",
+                type: 'get',
                 contentType: 'application/json;charset=utf-8',
                 dateType: 'json',
-                data: JSON.stringify(data),
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader('userId', localStorage.getItem('userId'));
+                    XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
+                    XMLHttpRequest.setRequestHeader('salt', localStorage.getItem('salt'));
+                },
                 success: function (data) {
-                    if (data.code == 200) {
-                        // alert(data.message);
-                        location.reload();//刷线当前页面,相当于F5
-                    } else {
+                    if (data.code != 200) {
                         alert(data.msg);
+                        $(location).attr('href', 'login'); //重定向
                     }
                 },
-                fail: function (err) {
-                    console.log(err)
+                fail: function () {
+                    $(location).attr('href', 'login'); //重定向
                 }
             })
+
+
+            // 监视封面更改
+            $("#img").change(function () {
+                const formData = new FormData();
+                formData.append("file", this.files[0]);
+                $.ajax({
+                    url: url.baseUrl + "api/basic/upload",
+                    type: 'post',
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: formData,
+                    success: function (data) {
+                        console.log(data)
+                        if (data.code == 200) {
+                            $("#img_pic").attr('src', data.data);
+                        } else {
+                            alert(data.msg);
+                        }
+                    },
+                    fail: function (err) {
+                        console.log(err)
+                    }
+                })
+            });
+
+            $("#submit").on('click', function () {
+                let data = {};
+                data.type = parseInt($('.div_input_type input[name="type"]:checked').val());
+                data.title = $("#title").val();
+                data.smallContent = $("#smallContent").val();
+                data.img = $("#img_pic")[0].src;
+                data.content = editor.txt.html();
+                if (data.title == null || data.title == '') {
+                    alert("请输入标题！");
+                    return
+                } else if (data.smallContent == null || data.small_content == '') {
+                    alert("请输入简介！");
+                    return
+                } else if (data.img == null || data.img == 'statics/images/jia.jpg' || data.img == '') {
+                    alert("请输入封面！");
+                    return
+                } else if (data.content == null || data.content == '' || data.content == '请输入内容......') {
+                    alert("请输入内容！");
+                    return
+                }
+                $.ajax({
+                    url: url.baseUrl + "api/article/add",
+                    type: 'post',
+                    contentType: 'application/json;charset=utf-8',
+                    dateType: 'json',
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        if (data.code == 200) {
+                            // alert(data.message);
+                            location.reload();//刷线当前页面,相当于F5
+                        } else {
+                            alert(data.msg);
+                        }
+                    },
+                    fail: function (err) {
+                        console.log(err)
+                    }
+                })
+            })
         })
-    });
-</script>
+    </script>
 </body>
+
 </html>
