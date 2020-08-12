@@ -15,6 +15,7 @@ type Code struct {
 
 //--------定义返回码，以及返回信息
 var SuccCode = Code{Code: http.StatusOK, Msg: "success"}
+var HidenCode = Code{Code: http.StatusUnauthorized, Msg: "访问未授权"}
 var LoginCode = Code{Code: http.StatusBadRequest, Msg: "用户名或者密码错误！！！"}
 var ReqCode = Code{Code: http.StatusBadRequest, Msg: "入参缺失，请补充"}
 var SysCode = Code{Code: http.StatusBadRequest, Msg: "系统错误"}

@@ -1,123 +1,68 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<title>Hanan_Yu.Liu</title>
-	<link rel="shortcut icon" type="image/x-icon" href="/statics/images/icon.png"/>
-	<meta name="keywords" content="" />
-	<meta name="description" content="" /> 
-
-	<!-- <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css"> -->
-	<link rel="stylesheet" type="text/css" href="/statics/css/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="/statics/css/fonts/iconic/css/material-design-iconic-font.min.css">
-	<link rel="stylesheet" type="text/css" href="/statics/css/util.css">
-	<link rel="stylesheet" type="text/css" href="/statics/css/main.css">
+    <meta charset="UTF-8">
+    <title>Hanan_Yu.Liu</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/statics/images/icon.png"/>
+    <link rel="stylesheet" href="/statics/css/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/statics/css/style.css">
 </head>
-
 <body>
 
-	<div class="limiter">
-		<div class="container-login100" style="background-image: url('/statics/images/bg-01.jpg');">
-			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-					<span class="login100-form-title p-b-49">登录</span>
+<div class="materialContainer">
+    <div class="box">
+        <div class="title">登录</div>
+        <div class="input">
+            <label for="name">用户名</label>
+            <input type="text" name="name" id="name">
+            <span class="spin"></span>
+        </div>
+        <div class="input">
+            <label for="pass">密码</label>
+            <input type="password" name="pass" id="pass">
+            <span class="spin"></span>
+        </div>
+        <div class="button login">
+            <button  id="login">
+                <span>登录</span>
+                <i class="fa fa-check"></i>
+            </button>
+        </div>
+        <a href="javascript:" class="pass-forgot">忘记密码？</a>
+    </div>
 
-					<div class="wrap-input100 validate-input m-b-23" data-validate="请输入用户名">
-						<span class="label-input100">用户名</span>
-						<input class="input100" id="account" type="text" name="username" placeholder="请输入用户名" autocomplete="off">
-						<span class="focus-input100" data-symbol="&#xf206;"></span>
-					</div>
+    <div class="overbox">
+        <div class="material-button alt-2">
+            <span class="shape"></span>
+        </div>
+        <div class="title">注册</div>
+        <div class="input">
+            <label for="regname">用户名</label>
+            <input type="text" name="regname" id="regname">
+            <span class="spin"></span>
+        </div>
+        <div class="input">
+            <label for="regpass">密码</label>
+            <input type="password" name="regpass" id="regpass">
+            <span class="spin"></span>
+        </div>
+        <div class="input">
+            <label for="reregpass">确认密码</label>
+            <input type="password" name="reregpass" id="reregpass">
+            <span class="spin"></span>
+        </div>
+        <div class="button">
+            <button>
+                <span>注册</span>
+            </button>
+        </div>
+    </div>
 
-					<div class="wrap-input100 validate-input" data-validate="请输入密码">
-						<span class="label-input100">密码</span>
-						<input class="input100" id="password" type="password" name="pass" placeholder="请输入密码">
-						<span class="focus-input100" data-symbol="&#xf190;"></span>
-					</div>
+</div>
 
-					<div class="text-right p-t-8 p-b-31">
-						<a href="javascript:">忘记密码？</a>
-					</div>
+<script src="/statics/js/jquery.min.js"></script>
+<script src="/statics/js/config.js"></script>
+<script src="/statics/js/index.js"></script>
 
-					<div class="container-login100-form-btn">
-						<div class="wrap-login100-form-btn">
-							<div class="login100-form-bgbtn"></div>
-							<button id="submit" class="login100-form-btn">登 录</button>
-						</div>
-					</div>
-
-					<div class="txt1 text-center p-t-54 p-b-20">
-						<span>第三方登录</span>
-					</div>
-
-					<div class="flex-c-m">
-						<a href="javascript:void(0);" class="login100-social-item bg1">
-							<i class="fa fa-wechat"></i>
-						</a>
-
-						<a href="javascript:void(0);" class="login100-social-item bg2">
-							<i class="fa fa-qq"></i>
-						</a>
-
-						<a href="javascript:void(0);" class="login100-social-item bg3">
-							<i class="fa fa-weibo"></i>
-						</a>
-					</div>
-
-					<div class="flex-col-c p-t-25">
-						<a href="javascript:" class="txt2">立即注册</a>
-					</div>
-			</div>
-		</div>
-	</div>
-
-	<script src="/statics/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/statics/js/config.js"></script>
-	<script>
-		$(function () {
-			$("#submit").on('click', function () {
-				let data = {};
-				data.account = $("#account").val();
-				data.password = $("#password").val();
-				if (data.account == null || data.account == ''){
-					$("#account").parent().addClass('alert-validate')
-					return
-				}
-				if (data.password == null || data.password == ''){
-					$("#password").parent().addClass('alert-validate')
-					return
-				}
-				$.ajax({
-					url: url.baseUrl + "api/basic/login",
-					type: 'post',
-					contentType: 'application/json;charset=utf-8',
-					dateType: 'json',
-					data: JSON.stringify(data),
-					success: function (data) {
-						if (data.code == 200) {
-							localStorage.setItem("userId", data.data.userId)
-							localStorage.setItem("token", data.data.token)
-							localStorage.setItem("salt", data.data.salt)
-							$(location).attr('href', 'article'); //重定向
-						} else {
-							alert(data.msg);
-						}
-					},
-					fail: function (err) {
-						console.log(err)
-					}
-				})
-			})
-
-			$("#account").bind('focus', function () {
-				$("#account").parent().removeClass('alert-validate')
-			})
-			$("#password").bind('focus', function () {
-				$("#password").parent().removeClass('alert-validate')
-			})
-		})
-	</script>
 </body>
-
 </html>

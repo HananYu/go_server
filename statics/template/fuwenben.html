@@ -249,30 +249,29 @@
         editor.create()
 
         $(function () {
-            // console.log('userId-------'+localStorage.getItem('userId'))
-            // console.log('token-------'+localStorage.getItem('token'))
-            // console.log('salt-------'+localStorage.getItem('salt'))
-            $.ajax({
-                url: url.baseUrl + "api/getH",
-                type: 'get',
-                contentType: 'application/json;charset=utf-8',
-                dateType: 'json',
-                beforeSend: function (XMLHttpRequest) {
-                    XMLHttpRequest.setRequestHeader('userId', localStorage.getItem('userId'));
-                    XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
-                    XMLHttpRequest.setRequestHeader('salt', localStorage.getItem('salt'));
-                },
-                success: function (data) {
-                    if (data.code != 200) {
-                        alert(data.msg);
+            (function() {
+                //dom加载前执行的方法
+                $.ajax({
+                    url: url.baseUrl + "api/getH",
+                    type: 'get',
+                    contentType: 'application/json;charset=utf-8',
+                    dateType: 'json',
+                    beforeSend: function (XMLHttpRequest) {
+                        XMLHttpRequest.setRequestHeader('userId', localStorage.getItem('userId'));
+                        XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
+                        XMLHttpRequest.setRequestHeader('salt', localStorage.getItem('salt'));
+                    },
+                    success: function (data) {
+                        if (data.code != 200) {
+                            alert(data.msg);
+                            $(location).attr('href', 'login'); //重定向
+                        }
+                    },
+                    fail: function () {
                         $(location).attr('href', 'login'); //重定向
                     }
-                },
-                fail: function () {
-                    $(location).attr('href', 'login'); //重定向
-                }
-            })
-
+                })
+            })(jQuery);
 
             // 监视封面更改
             $("#img").change(function () {

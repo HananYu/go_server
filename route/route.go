@@ -1,7 +1,9 @@
 package route
 
 import (
+	"fmt"
 	. "gin/apis"
+	"gin/models"
 	. "gin/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -13,7 +15,8 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 
 	// Use(Authorize())之前的接口，都不用经过身份验证
-	router.POST("/api/basic/login", Login) //登陆接口
+	router.POST("/api/basic/logon", InsertUser) //注册接口
+	router.POST("/api/basic/login", Login)      //登陆接口
 
 	//文章接口
 	router.POST("/api/basic/upload", UploadFile)         //上传文件接口
@@ -61,16 +64,15 @@ func Authorize() gin.HandlerFunc {
 		userId := c.GetHeader("userId") // 用户ID
 		salt := c.GetHeader("salt")     // 盐
 		token := c.GetHeader("token")   // 访问令牌
-
+		fmt.Println("请求token----------" + strings.ToLower(MD5([]byte(string(userId)+salt+TokenSalt))))
+		fmt.Println("存储token----------" + strings.ToLower(token))
 		if strings.ToLower(MD5([]byte(userId+salt+TokenSalt))) == strings.ToLower(token) {
 			// 验证通过，会继续访问下一个中间件
 			c.Next()
 		} else {
 			// 验证不通过，不再调用后续的函数处理
 			c.Abort()
-			c.JSON(http.StatusUnauthorized, gin.H{"message": "访问未授权"})
-			// return可省略, 只要前面执行Abort()就可以让后面的handler函数不再执行
-			//return
+			c.JSON(http.StatusOK, models.HidenCode)
 		}
 	}
 }
