@@ -188,10 +188,8 @@
 						if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
 							resetNumCode();
 							currentPage++;
-							console.log('请求的页面' + currentPage);
 							if (getlist(currentPage, pageSize)) {
 								currentPage--;
-								console.log('最新的页面' + currentPage);
 							}
 						}
 					}
