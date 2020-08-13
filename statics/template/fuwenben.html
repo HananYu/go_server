@@ -95,7 +95,7 @@
 </head>
 
 <body class="home blog custom-background round-avatars">
-<div class="Yarn_Background" style="background-image: url(/statics/images/47fb3c_.jpg);"></div>
+<div class="Yarn_Background" style="background-image: url(/statics/images/bg.png);"></div>
 <form class="js-search search-form search-form--modal" method="get" action="search" role="search">
     <div class="search-form__inner">
         <div>
@@ -143,6 +143,10 @@
                                 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57">
                                 <a href="gustbook">留言</a>
                             </li>
+                            <li id="menu-item-57"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57">
+                                <a href="article">撰写</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -188,8 +192,8 @@
 <div id="main" class="content">
     <div class="div_input_type">
         <span>类型：</span>
-        <input type="radio" name="type" value="0" checked="checked"/>随笔
-        <input type="radio" name="type" value="1"/>随记
+        <input type="radio" name="type" value="0"/>随笔
+        <input type="radio" name="type" value="1" checked="checked"/>随记
         {{/*    <input type="radio" name="type" value="2"/>其它*/}}
     </div>
     <div class="div_input">
@@ -250,6 +254,7 @@
 
         $(function () {
             (function() {
+                $("#main").attr('style', 'display:none;')
                 //dom加载前执行的方法
                 $.ajax({
                     url: url.baseUrl + "api/getH",
@@ -257,14 +262,14 @@
                     contentType: 'application/json;charset=utf-8',
                     dateType: 'json',
                     beforeSend: function (XMLHttpRequest) {
-                        XMLHttpRequest.setRequestHeader('userId', localStorage.getItem('userId'));
                         XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
-                        XMLHttpRequest.setRequestHeader('salt', localStorage.getItem('salt'));
                     },
                     success: function (data) {
                         if (data.code != 200) {
-                            alert(data.msg);
+                            // alert(data.msg);
                             $(location).attr('href', 'login'); //重定向
+                        }else{
+                            $("#main").attr('style', 'display:block;')
                         }
                     },
                     fail: function () {
@@ -328,7 +333,7 @@
                     success: function (data) {
                         if (data.code == 200) {
                             // alert(data.message);
-                            location.reload();//刷线当前页面,相当于F5
+                            location.reload()//刷线当前页面,相当于F5
                         } else {
                             alert(data.msg);
                         }

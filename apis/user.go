@@ -23,13 +23,30 @@ func InsertUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, models.ReqCode) //作为错误处理
 		return
 	}
+	config.Db.Table("sys_user").Where("account = ?", user.Account).First(&user)
+	if user.Id != config.Common_ZERO {
+		//账号已经存在，不能进行注册
+		c.JSON(http.StatusOK, models.AccountCode)
+		return
+	}
 	user.CreateDate = int(time.Now().Unix()) //获取时间戳
 	user.Salt = utils.GetRandomString(6)
 	user.Password = strings.ToLower(utils.MD5([]byte(user.Password + user.Salt)))
-	//user.IsDel = 0
-	//user.CreateBy = 0
 
 	config.Db.Table("sys_user").Create(&user)
+	c.JSON(http.StatusOK, models.SuccCode)
+}
+
+//判断用户名是否存在
+func FindByAccount(c *gin.Context) {
+	account := c.Query("account")
+	var user models.User
+	config.Db.Table("sys_user").Where("account = ?", account).First(&user)
+	if user.Id != config.Common_ZERO {
+		//账号已经存在，不能进行注册
+		c.JSON(http.StatusOK, models.AccountCode)
+		return
+	}
 	c.JSON(http.StatusOK, models.SuccCode)
 }
 
@@ -67,8 +84,8 @@ func Login(c *gin.Context) {
 		var ut models.UserToken
 		ut.Token = token
 		ut.UserId = ur.Id
-		ut.CreateDate = int(time.Now().Unix()) //10位时间戳精确到秒
-		ut.EndDate = ut.CreateDate + (10 * 60) //有效时间为十分钟
+		ut.CreateDate = int(time.Now().Unix())      //10位时间戳精确到秒
+		ut.EndDate = ut.CreateDate + (12 * 60 * 60) //有效时间为12小时
 		config.Db.Table("sys_user_token").Create(&ut)
 		c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, token))
 		return

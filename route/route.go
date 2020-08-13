@@ -1,13 +1,12 @@
 package route
 
 import (
-	"fmt"
 	. "gin/apis"
+	"gin/config"
 	"gin/models"
-	. "gin/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strings"
+	"time"
 )
 
 //将路由放至在此处
@@ -15,8 +14,9 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 
 	// Use(Authorize())之前的接口，都不用经过身份验证
-	router.POST("/api/basic/logon", InsertUser) //注册接口
-	router.POST("/api/basic/login", Login)      //登陆接口
+	router.POST("/api/basic/logon", InsertUser)     //注册接口
+	router.POST("/api/basic/login", Login)          //登陆接口
+	router.GET("/api/basic/account", FindByAccount) //判断账号是否存在
 
 	//文章接口
 	router.POST("/api/basic/upload", UploadFile)         //上传文件接口
@@ -61,18 +61,22 @@ func InitRouter() *gin.Engine {
 
 func Authorize() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userId := c.GetHeader("userId") // 用户ID
-		salt := c.GetHeader("salt")     // 盐
-		token := c.GetHeader("token")   // 访问令牌
-		fmt.Println("请求token----------" + strings.ToLower(MD5([]byte(string(userId)+salt+TokenSalt))))
-		fmt.Println("存储token----------" + strings.ToLower(token))
-		if strings.ToLower(MD5([]byte(userId+salt+TokenSalt))) == strings.ToLower(token) {
-			// 验证通过，会继续访问下一个中间件
-			c.Next()
-		} else {
+		token := c.GetHeader("token") // 访问令牌
+		var ut models.UserToken
+		config.Db.Table("sys_user_token").Where("token = ?", token).First(&ut)
+		if ut.UserId == config.Common_ZERO {
 			// 验证不通过，不再调用后续的函数处理
 			c.Abort()
 			c.JSON(http.StatusOK, models.HidenCode)
+			return
 		}
+		if ut.EndDate < int(time.Now().Unix()) {
+			//通过过期时间来判断是不是存在这个token或者过期
+			config.Db.Table("sys_user_token").Delete(&ut) //删除过期记录
+			c.Abort()
+			c.JSON(http.StatusOK, models.TokenCode)
+			return
+		}
+		c.Next()
 	}
 }

@@ -97,16 +97,16 @@ $(function () {
 
     //登陆
     $("#login").click(function (e) {
-       var _this = $(this)
+        var _this = $(this)
         let data = {};
         data.account = $("#name").val();
         data.password = $("#pass").val();
-        if (data.account == null || data.account == '') {
-            $("#account").parent().addClass('alert-validate')
+        if (data.account == null || data.account === '') {
+            alert("请输入用户名")
             return
         }
-        if (data.password == null || data.password == '') {
-            $("#password").parent().addClass('alert-validate')
+        if (data.password == null || data.password === '') {
+            alert("请输入密码")
             return
         }
         $.ajax({
@@ -116,23 +116,78 @@ $(function () {
             dateType: 'json',
             data: JSON.stringify(data),
             success: function (data) {
-                if (data.code == 200) {
-                   var pX = e.pageX,
-                       pY = e.pageY,
-                       oX = parseInt(_this.offset().left),
-                       oY = parseInt(_this.offset().top);
-                   _this.append('<span class="click-efect x-' + oX + ' y-' + oY + '" style="margin-left:' + (pX - oX) + 'px;margin-top:' + (pY - oY) + 'px;"></span>')
-                   $('.x-' + oX + '.y-' + oY + '').animate({
-                      "width": "500px",
-                      "height": "500px",
-                      "top": "-250px",
-                      "left": "-250px",
-                   }, 600);
-                   _this.addClass('active');
-                    localStorage.setItem("userId", data.data.userId)
-                    localStorage.setItem("token", data.data.token)
-                    localStorage.setItem("salt", data.data.salt)
+                if (data.code === 200) {
+                    var pX = e.pageX,
+                        pY = e.pageY,
+                        oX = parseInt(_this.offset().left),
+                        oY = parseInt(_this.offset().top);
+                    _this.append('<span class="click-efect x-' + oX + ' y-' + oY + '" style="margin-left:' + (pX - oX) + 'px;margin-top:' + (pY - oY) + 'px;"></span>')
+                    $('.x-' + oX + '.y-' + oY + '').animate({
+                        "width": "500px",
+                        "height": "500px",
+                        "top": "-250px",
+                        "left": "-250px",
+                    }, 600);
+                    _this.addClass('active');
+                    localStorage.setItem("token", data.data)
                     $(location).attr('href', 'article'); //重定向
+                } else {
+                    alert(data.msg);
+                }
+            },
+            fail: function (err) {
+                console.log(err)
+            }
+        })
+    })
+
+    //校验用户名是否已经存在
+    $("#regname").blur(function () {
+        if ($("#regname").val()){
+            $.ajax({
+                url: url.baseUrl + "api/basic/account?account="+ $("#regname").val(),
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dateType: 'json',
+                success: function (data) {
+                    if (data.code !== 200) {
+                        alert(data.msg);
+                    }
+                },
+                fail: function (err) {
+                    console.log(err)
+                }
+            })
+        }
+    })
+
+
+    //注册
+    $("#logon").click(function () {
+        let data = {};
+        data.account = $("#regname").val();
+        data.password = $("#regpass").val();
+        if (data.account == null || data.account === '') {
+            alert("请输入用户名")
+            return
+        }
+        if (data.password == null || data.password === '') {
+            alert("请输入用户名")
+            return
+        }
+        if (data.password !== $("#reregpass").val()) {
+            alert("两次输入密码不一样，请确认密码")
+            return
+        }
+        $.ajax({
+            url: url.baseUrl + "api/basic/logon",
+            type: 'post',
+            contentType: 'application/json;charset=utf-8',
+            dateType: 'json',
+            data: JSON.stringify(data),
+            success: function (data) {
+                if (data.code === 200) {
+                    location.reload();
                 } else {
                     alert(data.msg);
                 }
