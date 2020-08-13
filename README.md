@@ -1,3 +1,8 @@
 # go_server
-纪念自己的第一个GO项目
-用作自己第一个blog的后台
+Go项目博客，修改后台java为go
+
+windows打包go部署到linux
+SET CGO_ENABLED=0
+SET GOOS=linux
+SET GOARCH=amd64
+go build main.go

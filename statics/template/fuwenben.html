@@ -253,7 +253,7 @@
         editor.create()
 
         $(function () {
-            (function() {
+            (function () {
                 $("#main").attr('style', 'display:none;')
                 //dom加载前执行的方法
                 $.ajax({
@@ -266,9 +266,8 @@
                     },
                     success: function (data) {
                         if (data.code != 200) {
-                            // alert(data.msg);
                             $(location).attr('href', 'login'); //重定向
-                        }else{
+                        } else {
                             $("#main").attr('style', 'display:block;')
                         }
                     },
@@ -329,10 +328,12 @@
                     type: 'post',
                     contentType: 'application/json;charset=utf-8',
                     dateType: 'json',
+                    beforeSend: function (XMLHttpRequest) {
+                        XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
+                    },
                     data: JSON.stringify(data),
                     success: function (data) {
                         if (data.code == 200) {
-                            // alert(data.message);
                             location.reload()//刷线当前页面,相当于F5
                         } else {
                             alert(data.msg);

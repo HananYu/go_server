@@ -24,7 +24,7 @@ func InsertUser(c *gin.Context) {
 		return
 	}
 	config.Db.Table("sys_user").Where("account = ?", user.Account).First(&user)
-	if user.Id != config.Common_ZERO {
+	if user.Id != config.CommonZero {
 		//账号已经存在，不能进行注册
 		c.JSON(http.StatusOK, models.AccountCode)
 		return
@@ -42,7 +42,7 @@ func FindByAccount(c *gin.Context) {
 	account := c.Query("account")
 	var user models.User
 	config.Db.Table("sys_user").Where("account = ?", account).First(&user)
-	if user.Id != config.Common_ZERO {
+	if user.Id != config.CommonZero {
 		//账号已经存在，不能进行注册
 		c.JSON(http.StatusOK, models.AccountCode)
 		return

@@ -23,8 +23,8 @@ func UploadFile(c *gin.Context) {
 	i := strings.LastIndex(name, ".") //含有sub字段的位置
 	name = strings.ReplaceAll(uuid.Must(uuid.NewV4(), err).String(), "-", "") + name[i:]
 	// 上传文件到指定的路径，保存的文件路径含有文件的名称
-	c.SaveUploadedFile(file, config.Save_Path_URL+name)
-	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, config.Service_URL+name))
+	c.SaveUploadedFile(file, config.SavePathUrl+name)
+	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, config.ServiceUrl+name))
 }
 
 //新增文章接口
@@ -39,13 +39,19 @@ func InserTArticle(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	_, err = strconv.Atoi(c.GetHeader(config.Token_USERID)) // 用户ID
-	if err != nil {
-		article.CreateBy = 1
+	userId, bol := c.Get("userId")
+	if !bol {
+		c.JSON(http.StatusOK, models.UserCode)
+		return
+	}
+	id, _ := userId.(int)
+	if id == config.CommonZero {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
 	}
 	article.CreateDate = int(time.Now().Unix())
-	article.ReadNum = config.Common_ZERO
-	article.IsDel = config.Common_ZERO
+	//article.ReadNum = config.Common_ZERO
+	//article.IsDel = config.Common_ZERO
 
 	config.Db.Table("work_article").Create(&article)
 	c.JSON(http.StatusOK, models.SuccCode)
@@ -55,16 +61,16 @@ func InserTArticle(c *gin.Context) {
 func GetArticleList(c *gin.Context) {
 	var page models.PageRequest
 	c.BindJSON(&page)
-	if page.PageSize == config.Common_ZERO {
+	if page.PageSize == config.CommonZero {
 		//设置每页大小默认值
-		page.PageSize = config.Common_FIVE
+		page.PageSize = config.CommonFive
 	}
-	if page.CurrentPage == config.Common_ZERO {
+	if page.CurrentPage == config.CommonZero {
 		//设置当前页默认值
-		page.CurrentPage = config.Common_ONE
+		page.CurrentPage = config.CommonOne
 	}
 	var arts []models.Article
-	config.Db.Table("work_article").Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.Common_ONE) * page.PageSize).Find(&arts)
+	config.Db.Table("work_article").Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.CommonOne) * page.PageSize).Find(&arts)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
 }
 
@@ -79,10 +85,10 @@ func SearchArticleList(c *gin.Context) {
 	var arts []models.ArticleName
 	config.Db.Table("work_article").Order("create_date desc").Where("title LIKE ? or small_content LIKE ? ", name, name).Find(&arts)
 	for i, n := 0, len(arts); i < n; i++ {
-		if arts[i].Type == config.Common_ZERO {
+		if arts[i].Type == config.CommonZero {
 			arts[i].TypeName = "随笔"
 		}
-		if arts[i].Type == config.Common_ONE {
+		if arts[i].Type == config.CommonOne {
 			arts[i].TypeName = "随记"
 		}
 	}
@@ -97,13 +103,13 @@ func DetailArticleList(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	returnMap := make(map[string]interface{}, config.Common_FOUR)
+	returnMap := make(map[string]interface{}, config.CommonFour)
 	var art models.ArticleName
 	config.Db.Table("work_article").Where("id = ?", id).First(&art)
-	if art.Type == config.Common_ZERO {
+	if art.Type == config.CommonZero {
 		art.TypeName = "随笔"
 	}
-	if art.Type == config.Common_ONE {
+	if art.Type == config.CommonOne {
 		art.TypeName = "随记"
 	}
 	returnMap["obj"] = art //当前文章详情

@@ -48,21 +48,21 @@ func GetArticleRecords(c *gin.Context) {
 func GetGuestBooks(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Query("id"))
 	currentPage, _ := strconv.Atoi(c.Query("currentPage"))
-	if currentPage == config.Common_ZERO {
-		currentPage = config.Common_ONE
+	if currentPage == config.CommonZero {
+		currentPage = config.CommonOne
 	}
 	//留言默认每页请求为5条数据
-	returnMap := make(map[string]interface{}, config.Common_THREE)
+	returnMap := make(map[string]interface{}, config.CommonThree)
 	var books []models.GuestBook
-	config.Db.Table("work_review").Order("create_time desc").Where("a_id = ?", id).Limit(config.Common_FIVE).Offset((currentPage - config.Common_ONE) * config.Common_FIVE).Find(&books)
+	config.Db.Table("work_review").Order("create_time desc").Where("a_id = ?", id).Limit(config.CommonFive).Offset((currentPage - config.CommonOne) * config.CommonFive).Find(&books)
 	returnMap["list"] = books
 	var maxSize int //必须使用new关键字，不然就会错误 unsupported destination, should be slice or struct
 	config.Db.Table("work_review").Where("a_id = ?", id).Count(&maxSize)
 	maxPage := 0
-	if maxSize%config.Common_FIVE == config.Common_ZERO {
-		maxPage = maxSize / config.Common_FIVE
+	if maxSize%config.CommonFive == config.CommonZero {
+		maxPage = maxSize / config.CommonFive
 	} else {
-		maxPage = maxSize/config.Common_FIVE + config.Common_ONE
+		maxPage = maxSize/config.CommonFive + config.CommonOne
 	}
 	returnMap["maxSize"] = maxSize
 	returnMap["maxPage"] = maxPage

@@ -20,7 +20,6 @@ func InitRouter() *gin.Engine {
 
 	//文章接口
 	router.POST("/api/basic/upload", UploadFile)         //上传文件接口
-	router.POST("/api/article/add", InserTArticle)       //保存文章接口
 	router.POST("/api/article/get", GetArticleList)      //获取文章列表
 	router.GET("/api/article/search", SearchArticleList) //搜索文章列表
 	router.GET("/api/article/detail", DetailArticleList) //获取文章详情
@@ -28,6 +27,7 @@ func InitRouter() *gin.Engine {
 	//留言接口
 	router.POST("/api/guestbook/add", InsetGuestBook) //插入留言
 	router.GET("/api/guestbook/get", GetGuestBooks)   //获取留言
+
 	//归档页面接口
 	router.POST("/api/record/get", GetArticleRecords) //插入留言
 
@@ -50,11 +50,12 @@ func InitRouter() *gin.Engine {
 	router.Static("statics", "./statics").Static("file", "F:/Temp/") // 启动静态文件服务
 	//router.Static("statics", "./statics").Static("file", "/home/temp/") // 启动静态文件服务
 
-	//http.Handle("/statics/", http.StripPrefix("/statics/", http.FileServer(http.Dir("statics"))))// 启动静态文件服务
-
 	//以下的接口，都使用Authorize()中间件身份验证
 	router.Use(Authorize())
 	router.GET("/api/getH", GetHttp) //用于校验用户token
+
+	//文章接口
+	router.POST("/api/article/add", InserTArticle) //保存文章接口
 
 	return router
 }
@@ -62,9 +63,10 @@ func InitRouter() *gin.Engine {
 func Authorize() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("token") // 访问令牌
+
 		var ut models.UserToken
 		config.Db.Table("sys_user_token").Where("token = ?", token).First(&ut)
-		if ut.UserId == config.Common_ZERO {
+		if ut.UserId == config.CommonZero {
 			// 验证不通过，不再调用后续的函数处理
 			c.Abort()
 			c.JSON(http.StatusOK, models.HidenCode)
@@ -77,6 +79,7 @@ func Authorize() gin.HandlerFunc {
 			c.JSON(http.StatusOK, models.TokenCode)
 			return
 		}
+		c.Set("userId", ut.UserId)
 		c.Next()
 	}
 }
