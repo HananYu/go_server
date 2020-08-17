@@ -114,10 +114,10 @@ func DetailArticleList(c *gin.Context) {
 	}
 	returnMap["obj"] = art //当前文章详情
 	var lastObj models.ArticleSim
-	config.Db.Raw("select id, img,  title from work_article where id =(select id from work_article where id < ? order by id desc limit 1)", id).Scan(&lastObj)
+	config.Db.Raw("select id, img,  title from work_article where id =(select id from work_article where is_del = 0 and id < ? order by id desc limit 1)", id).Scan(&lastObj)
 	returnMap["lastObj"] = lastObj //上一条文章
 	var nextObj models.ArticleSim
-	config.Db.Raw("select id, img,  title from work_article where id =(select id from work_article where id > ? order by id desc limit 1)", id).Scan(&nextObj)
+	config.Db.Raw("select id, img,  title from work_article where id =(select id from work_article where is_del = 0 and id > ? order by id desc limit 1)", id).Scan(&nextObj)
 	returnMap["nextObj"] = nextObj //下一条文章
 	var books []models.GuestBook
 	config.Db.Table("work_review").Order("create_time desc").Where("a_id = ?", id).Find(&books)
