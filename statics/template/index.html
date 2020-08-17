@@ -9,6 +9,26 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <link rel="stylesheet" type="text/css" href="/statics/css/index.css" media="all"/>
+    <style type="text/css">
+        #myBtn {
+            /*display: none; !* 默认隐藏 *!*/
+            position: fixed;
+            bottom: 50px;
+            right: 20px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            background-image: url("/statics/images/top.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%; /*完全适应所在div的宽高*/
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 10px; /* 圆角 */
+        }
+    </style>
 </head>
 
 <body class="home blog custom-background round-avatars">
@@ -125,6 +145,8 @@
         </div>
     </div>
 </header>
+
+<a href="#top" title="返回顶部"><div id="myBtn" onfocus="getColor()"></div></a>
 <div id="main" class="content">
     <div class="container">
         <article itemscope="itemscope">
@@ -304,8 +326,6 @@
                 resetNumCode();
             }, 1000);
         }
-
-
     </script>
 </body>
 
