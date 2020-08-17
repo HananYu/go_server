@@ -240,9 +240,11 @@
     <script type='text/javascript' src='/statics/js/prism.js'></script>
     <script type='text/javascript' src='/statics/js/gravatar.js'></script>
     <script type="text/javascript" src="/statics/js/config.js"></script>
-    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script> //通过搜狐获取客户端的IP
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    //通过搜狐获取客户端的IP
     <script>
         let cip = returnCitySN["cip"] //获取当前客户端的IP
+        let token = localStorage.getItem('token') //获取token，判断是否显示修改按钮
         window.onscroll = function () {
             var scrollTop = document.body.scrollTop;
             if (scrollTop >= 200) {
@@ -252,9 +254,8 @@
             }
         }
         $(function () {
-            var id = getUrlParam('id');
             $.ajax({
-                url: url.baseUrl + "api/article/detail?id=" + id,
+                url: url.baseUrl + "api/article/detail?id=" + getUrlParam('id'),
                 type: 'get',
                 contentType: 'application/json;charset=utf-8',
                 dateType: 'json',
@@ -271,9 +272,11 @@
                             '" class="blog-card-thumb-image wp-post-image" alt = "" /></div ><div class="blog-card-content"><div class="blog-card-excerpt">' +
                             obj.smallContent + '</div></div></div ><hr /><div class="post-body js-gallery">' + obj.content + '</div >' +
                             '<div class="meta split split--responsive cf"><div class="split__title"><time datetime="2017-10-02 01:44">' + formatDate(obj.createDate) + '</time>' +
-                            '<span class="">  ' + obj.typeName + '</span></div >' +
-                            '<div id="social-share"></div>' +
-                            '<div class="slide"></div></div >';
+                            '<span class="">  ' + obj.typeName + '</span></div >';
+                        if (token != null) {
+                            strHtml += '<a style="float: right" href="modify?id=' + obj.id + '">修改 </a><span style="float:right;margin-right:10px;cursor:pointer" onclick="delArt(' + obj.id + ')"> 删除</span>';
+                        }
+                        strHtml += '<div id="social-share"></div><div class="slide"></div></div >';
                         $(".post_content").append(strHtml);
                         //上下两篇文章的渲染
                         let nextHtml = '';
@@ -285,7 +288,7 @@
                         if (nextObj.id !== 0) {
                             nextHtml += '<div class="next" data-aos="slide-left" data-aos-delay="1.5s"><div class="arrow"><i class="iconfont">&#xe623;</i></div><div class="preview">' +
                                 '<div class="pull-right featuredImg" style="background-image:url(' + nextObj.img + ');"></div>' +
-                                '<a class="pull-right preview-content bold" href="detail?id=' + nextObj.id +'"><span>' + nextObj.title + '</span></a></div></div>';
+                                '<a class="pull-right preview-content bold" href="detail?id=' + nextObj.id + '"><span>' + nextObj.title + '</span></a></div></div>';
                         }
                         $("#NextPrevPosts").append(nextHtml);
 
@@ -360,6 +363,28 @@
                 })
             });
         })
+
+        function delArt(id) {
+            $.ajax({
+                url: url.baseUrl + "api/article/del?id=" + id,
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dateType: 'json',
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
+                },
+                success: function (data) {
+                    if (data.code === 200) {
+                        $(location).attr('href', 'index'); //重定向
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (e) {
+                    // console.log(e)
+                }
+            })
+        }
     </script>
 
 </body>

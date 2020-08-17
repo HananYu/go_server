@@ -43,6 +43,7 @@ func InitRouter() *gin.Engine {
 	router.GET("/search", SearchHtml)
 	router.GET("/archives", ArchivesHtml)
 	router.GET("/detail", DetailHtml)
+	router.GET("/modify", ModifyHtml)
 	router.GET("/link", LinkHtml)
 	//router.GET("/update", UpdateHtml)
 
@@ -56,7 +57,10 @@ func InitRouter() *gin.Engine {
 	router.GET("/api/getH", GetHttp) //用于校验用户token
 
 	//文章接口
-	router.POST("/api/article/add", InserTArticle) //保存文章接口
+	router.POST("/api/article/add", InserTArticle)             //保存文章接口
+	router.GET("/api/article/getArt", GetArticleDetail)        //获取文章详情，用于修改使用
+	router.POST("/api/article/uploadArt", UploadArticleDetail) //更新文章详情
+	router.GET("/api/article/del", DelArticleByIsDel)          //逻辑删除文章
 
 	return router
 }

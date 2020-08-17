@@ -70,7 +70,7 @@ func GetArticleList(c *gin.Context) {
 		page.CurrentPage = config.CommonOne
 	}
 	var arts []models.Article
-	config.Db.Table("work_article").Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.CommonOne) * page.PageSize).Find(&arts)
+	config.Db.Table("work_article").Where("is_del=?", config.CommonZero).Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.CommonOne) * page.PageSize).Find(&arts)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
 }
 
@@ -83,7 +83,7 @@ func SearchArticleList(c *gin.Context) {
 	}
 	name = "%" + name + "%"
 	var arts []models.ArticleName
-	config.Db.Table("work_article").Order("create_date desc").Where("title LIKE ? or small_content LIKE ? ", name, name).Find(&arts)
+	config.Db.Table("work_article").Order("create_date desc").Where("title LIKE ? or small_content LIKE ? or label like ? ", name, name, name).Find(&arts)
 	for i, n := 0, len(arts); i < n; i++ {
 		if arts[i].Type == config.CommonZero {
 			arts[i].TypeName = "随笔"
@@ -125,4 +125,57 @@ func DetailArticleList(c *gin.Context) {
 	//更新访问量+1
 	config.Db.Exec("UPDATE work_article SET read_num = read_num + 1 where id = ?", id)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, returnMap))
+}
+
+//仅获取文章详情，用于修改
+func GetArticleDetail(c *gin.Context) {
+	cid := c.Query("id")
+	id, err := strconv.Atoi(cid)
+	if err != nil {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	var art models.Article
+	config.Db.Table("work_article").Where("id = ?", id).First(&art)
+	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, art))
+}
+
+//更新文章
+func UploadArticleDetail(c *gin.Context) {
+	var art models.Article
+	err := c.BindJSON(&art)
+	if err != nil {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	if art.Id == 0 || art.Title == "" || art.SmallContent == "" || art.Content == "" {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	userId, bol := c.Get("userId")
+	if !bol {
+		c.JSON(http.StatusOK, models.UserCode)
+		return
+	}
+	id, _ := userId.(int)
+	if id == config.CommonZero {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	art.UpdateBy = id
+	art.UpdateDate = int(time.Now().Unix())
+	config.Db.Table("work_article").Save(&art)
+	c.JSON(http.StatusOK, models.SuccCode)
+}
+
+//删除文章，逻辑删除
+func DelArticleByIsDel(c *gin.Context) {
+	cid := c.Query("id")
+	id, err := strconv.Atoi(cid)
+	if err != nil {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	config.Db.Table("work_article").Where("id=?", id).Update("is_del", config.CommonOne)
+	c.JSON(http.StatusOK, models.SuccCode)
 }

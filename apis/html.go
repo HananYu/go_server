@@ -40,3 +40,7 @@ func LinkHtml(c *gin.Context) {
 func UpdateHtml(c *gin.Context) {
 	c.HTML(http.StatusOK, "update.html", "")
 }
+
+func ModifyHtml(c *gin.Context) {
+	c.HTML(http.StatusOK, "modify.html", "")
+}

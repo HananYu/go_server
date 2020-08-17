@@ -10,11 +10,6 @@
     <meta name="keywords" content=""/>
     <link rel="stylesheet" type="text/css" href="/statics/css/index.css" media="all"/>
     <style type="text/css">
-        /*body {*/
-        /*    padding: 0;*/
-        /*    margin: 0;*/
-        /*    width: 100%;*/
-        /*}*/
         #main {
             padding: 30px 10%;
         }
@@ -167,7 +162,6 @@
                     </div>
                 </div>
             </nav>
-            <!-- #site-navigation -->
         </div>
     </div>
 </div>
@@ -278,30 +272,38 @@
         editor.customConfig.debug = true
         editor.create()
 
+        let obj = {}; //保存详情
+
         $(function () {
-            (function () {
-                $("#main").attr('style', 'display:none;')
-                //dom加载前执行的方法
-                $.ajax({
-                    url: url.baseUrl + "api/getH",
-                    type: 'get',
-                    contentType: 'application/json;charset=utf-8',
-                    dateType: 'json',
-                    beforeSend: function (XMLHttpRequest) {
-                        XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
-                    },
-                    success: function (data) {
-                        if (data.code != 200) {
-                            $(location).attr('href', 'login'); //重定向
-                        } else {
-                            $("#main").attr('style', 'display:block;')
-                        }
-                    },
-                    fail: function () {
+            $("#main").attr('style', 'display:none;')
+            //获取详情并将数据回显
+            $.ajax({
+                url: url.baseUrl + "api/article/getArt?id=" + getUrlParam('id'),
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dateType: 'json',
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
+                },
+                success: function (data) {
+                    if (data.code === 200) {
+                        $("#main").attr('style', 'display:block;')
+                        obj = data.data
+                        console.log(obj)
+                        editor.txt.html(obj.content)
+                        $('#title').attr('value', obj.title)
+                        $("#label").attr('value', obj.label);
+                        $("#smallContent").attr('value', obj.smallContent);
+                        $("#img_pic").attr('src', obj.img);
+                        $('.div_input_type input:radio[value="'+ obj.type +'"]').attr("checked", "true"); /*对单选框赋值*/
+                    } else {
                         $(location).attr('href', 'login'); //重定向
                     }
-                })
-            })(jQuery);
+                },
+                fail: function () {
+                    $(location).attr('href', 'login'); //重定向
+                }
+            })
 
             // 监视封面更改
             $("#img").change(function () {
@@ -329,35 +331,35 @@
             });
 
             $("#submit").on('click', function () {
-                let data = {};
-                data.type = parseInt($('.div_input_type input[name="type"]:checked').val());
-                data.title = $("#title").val();
-                data.label = $("#label").val()
-                data.smallContent = $("#smallContent").val();
-                data.img = $("#img_pic")[0].src;
-                data.content = editor.txt.html();
-                if (data.title == null || data.title == '') {
+                console.log(obj)
+                obj.type = parseInt($('.div_input_type input[name="type"]:checked').val());
+                obj.title = $("#title").val();
+                obj.label = $("#label").val()
+                obj.smallContent = $("#smallContent").val();
+                obj.img = $("#img_pic")[0].src;
+                obj.content = editor.txt.html();
+                if (obj.title == null || obj.title == '') {
                     alert("请输入标题！");
                     return
-                } else if (data.smallContent == null || data.small_content == '') {
+                } else if (obj.smallContent == null || obj.small_content == '') {
                     alert("请输入简介！");
                     return
-                } else if (data.img == null || data.img == 'statics/images/jia.jpg' || data.img == '') {
+                } else if (obj.img == null || obj.img == 'statics/images/jia.jpg' || obj.img == '') {
                     alert("请输入封面！");
                     return
-                } else if (data.content == null || data.content == '' || data.content == '请输入内容......') {
+                } else if (obj.content == null || obj.content == '' || obj.content == '请输入内容......') {
                     alert("请输入内容！");
                     return
                 }
                 $.ajax({
-                    url: url.baseUrl + "api/article/add",
+                    url: url.baseUrl + "api/article/uploadArt",
                     type: 'post',
                     contentType: 'application/json;charset=utf-8',
                     dateType: 'json',
                     beforeSend: function (XMLHttpRequest) {
                         XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
                     },
-                    data: JSON.stringify(data),
+                    data: JSON.stringify(obj),
                     success: function (data) {
                         if (data.code == 200) {
                             location.reload()//刷线当前页面,相当于F5

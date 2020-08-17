@@ -230,7 +230,7 @@
                                     strHtml += '<div class="post post-layout-list" data-aos="fade-up"><div class="status_list_item icon_kyubo">' +
                                         '<div class="status_user" style="background-image: url(' + res.img + ');">' +
                                         '<div class="status_section"><a href="detail?id=' + res.id + '" class="status_btn">[ ' + res.label + ' ]  ' + res.title + '</a>' +
-                                        '<p class="section_p">' + res.smallContent + '</p>' +
+                                        '<p class="section_p">' + res.smallContent + '</p>'+
                                         '</div></div></div></div>';
                                 } else {
                                     //表示日记
@@ -241,7 +241,7 @@
                                         '<div class="review-item-creator"><b>发布日期：</b>' + formatTime(res.createDate) + '</div><span class="review-item-info"><b>总浏览量：</b>' + res.readNum + ' 阅读</span></div></div>' +
                                         '<div class="review-bg-wrapper"><div class="bg-blur" style="background-image: url(' + res.img + ');"></div></div></div>' +
                                         '<div class="post-container"><div class="entry-content">' + res.smallContent + '</div><div class="post-footer">' +
-                                        '<a class="gaz-btn primary" href="detail?id=' + res.id + '">READ MORE</a>' +
+                                        '<a class="gaz-btn primary" href="detail?id=' + res.id + '">READ MORE</a>'+
                                         '</div></div></div></div>';
                                 }
                                 // else if (res.type == 2) {
