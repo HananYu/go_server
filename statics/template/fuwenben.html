@@ -45,6 +45,23 @@
             border: 1px solid #E88888;
         }
 
+        .div_input select {
+            width: 30%;
+            min-width: 200px;
+            height: 40px;
+            border: 1px solid #EDEAEA;
+            padding-left: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            appearance: none;
+        / / 去掉箭头 outline: none;
+        / / 去掉选中之后默认高亮显示
+        }
+
+        .div_input select:focus {
+            border: 1px solid #E88888;
+        }
+
         .div_input_type {
             font-size: 18px;
             width: 100%;
@@ -124,7 +141,7 @@
                     <div class="menu-menu-container">
                         <ul id="primary-menu" class="menu">
                             <li id="menu-item-17"
-                                class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-17">
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17">
                                 <a href="index">首页</a>
                             </li>
                             <li id="menu-item-173"
@@ -136,7 +153,7 @@
                                 <a href="link">链接</a>
                             </li>
                             <li id="menu-item-252"
-                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-252">
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-252">
                                 <a href="archives">归档</a>
                             </li>
                             <li id="menu-item-57"
@@ -194,11 +211,22 @@
         <span>类型：</span>
         <input type="radio" name="type" value="0"/>随笔
         <input type="radio" name="type" value="1" checked="checked"/>随记
-        {{/*    <input type="radio" name="type" value="2"/>其它*/}}
+        <input type="radio" name="type" value="2"/>随行
     </div>
     <div class="div_input">
         <span>标题：</span>
         <input type="text" id="title" placeholder="请输入标题"/>
+    </div>
+    <div class="div_input">
+        <span>标签：</span>
+        <select id="label">
+            <option value="" disabled selected>请选择标签</option>
+            <option value="Java">Java</option>
+            <option value="Go">Go</option>
+            <option value="Sql">Sql</option>
+            <option value="GIS">GIS</option>
+            <option value="Design">Design</option>
+        </select>
     </div>
     <div class="div_input">
         <span>简介：</span>
@@ -245,7 +273,6 @@
         var E = window.wangEditor
         var editor = new E('#editor')
         // 或者 var editor = new E( document.getElementById('editor') )
-
         // editor.customConfig.showLinkImg = false  // 隐藏“网络图片”tab
         editor.customConfig.uploadFileName = 'file'
         editor.customConfig.uploadImgServer = url.baseUrl + 'api/basic/upload'//官方文档上写的是服务器地址，也就是上传图片的方法名
@@ -304,6 +331,8 @@
             });
 
             $("#submit").on('click', function () {
+                alert("标签的值" + $("#label").val())
+                return;
                 let data = {};
                 data.type = parseInt($('.div_input_type input[name="type"]:checked').val());
                 data.title = $("#title").val();

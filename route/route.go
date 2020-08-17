@@ -14,9 +14,10 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 
 	// Use(Authorize())之前的接口，都不用经过身份验证
-	router.POST("/api/basic/logon", InsertUser)     //注册接口
-	router.POST("/api/basic/login", Login)          //登陆接口
-	router.GET("/api/basic/account", FindByAccount) //判断账号是否存在
+	router.POST("/api/basic/logon", InsertUser)       //注册接口
+	router.POST("/api/basic/login", Login)            //登陆接口
+	router.GET("/api/basic/account", FindByAccount)   //判断账号是否存在
+	router.POST("/api/basic/changPw", ChangePassword) //修改用户密码，传入account password
 
 	//文章接口
 	router.POST("/api/basic/upload", UploadFile)         //上传文件接口
@@ -43,12 +44,12 @@ func InitRouter() *gin.Engine {
 	router.GET("/archives", ArchivesHtml)
 	router.GET("/detail", DetailHtml)
 	router.GET("/link", LinkHtml)
-	router.GET("/update", UpdateHtml)
+	//router.GET("/update", UpdateHtml)
 
 	//静态资源，放置在拦截器之前不会对静态资源进行拦截
 	router.LoadHTMLGlob("statics/template/*")
-	//router.Static("statics", "./statics").Static("file", "F:/Temp/") // 启动静态文件服务
-	router.Static("statics", "./statics").Static("file", "/home/temp/") // 启动静态文件服务
+	router.Static("statics", "./statics").Static("file", "F:/Temp/") // 启动静态文件服务
+	//router.Static("statics", "./statics").Static("file", "/home/temp/") // 启动静态文件服务
 
 	//以下的接口，都使用Authorize()中间件身份验证
 	router.Use(Authorize())

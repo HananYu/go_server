@@ -7,6 +7,7 @@ type Article struct {
 	UpdateDate   int    `json:"updateDate" gorm:"column:update_date"`
 	UpdateBy     int    `json:"updateBy" gorm:"column:update_by"`
 	Title        string `json:"title"`
+	Label        string `json:"label"`
 	Type         int    `json:"type"`
 	SmallContent string `json:"smallContent" gorm:"column:small_content"`
 	Content      string `json:"content"`
@@ -22,6 +23,7 @@ type ArticleName struct {
 	UpdateDate   int    `json:"updateDate" gorm:"column:update_date"`
 	UpdateBy     int    `json:"updateBy" gorm:"column:update_by"`
 	Title        string `json:"title"`
+	Label        string `json:"label"`
 	Type         int    `json:"type"`
 	SmallContent string `json:"smallContent" gorm:"column:small_content"`
 	Content      string `json:"content"`
@@ -41,6 +43,7 @@ type ArticleSim struct {
 type ArticleRecordNum struct {
 	Id          int    `json:"id"`
 	Title       string `json:"title"`
+	Label       string `json:"label"`
 	CreateDate  int    `json:"createDate" gorm:"column:create_date"`
 	ReviewCount int    `json:"reviewCount" gorm:"column:reviewCount"`
 }
@@ -49,6 +52,7 @@ type ArticleRecordNum struct {
 type ArticleRecord struct {
 	Id          int    `json:"id"`
 	Title       string `json:"title"`
+	Label       string `json:"label"`
 	YearM       string `json:"yearM"`
 	DateM       string `json:"dateM"`
 	ReviewCount int    `json:"reviewCount"`

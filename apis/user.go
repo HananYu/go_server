@@ -11,6 +11,23 @@ import (
 	"time"
 )
 
+func ChangePassword(c *gin.Context) {
+	var user models.User
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	if user.Account == "" || user.Password == "" {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	user.Salt = utils.GetRandomString(6)
+	user.Password = strings.ToLower(utils.MD5([]byte(user.Password + user.Salt)))
+	config.Db.Table("sys_user").Where("account=?", user.Account).Update(map[string]interface{}{"password": user.Password, "salt": user.Salt})
+	c.JSON(http.StatusOK, models.SuccCode)
+}
+
 //注册用户
 func InsertUser(c *gin.Context) {
 	var user models.User
