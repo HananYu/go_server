@@ -50,8 +50,8 @@ func InserTArticle(c *gin.Context) {
 		return
 	}
 	article.CreateDate = int(time.Now().Unix())
-	//article.ReadNum = config.Common_ZERO
-	//article.IsDel = config.Common_ZERO
+	//https://www.cnblogs.com/linguanh/p/6233013.html 压缩图片
+	//上传时候去内容里面将所有图片找出来，然后进行压缩处理，直接保存到img字段，
 
 	config.Db.Table("work_article").Create(&article)
 	c.JSON(http.StatusOK, models.SuccCode)
@@ -91,6 +91,9 @@ func SearchArticleList(c *gin.Context) {
 		if arts[i].Type == config.CommonOne {
 			arts[i].TypeName = "随记"
 		}
+		if arts[i].Type == config.CommonTwo {
+			arts[i].TypeName = "随行"
+		}
 	}
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
 }
@@ -110,6 +113,9 @@ func DetailArticleList(c *gin.Context) {
 		art.TypeName = "随笔"
 	}
 	if art.Type == config.CommonOne {
+		art.TypeName = "随记"
+	}
+	if art.Type == config.CommonTwo {
 		art.TypeName = "随记"
 	}
 	returnMap["obj"] = art //当前文章详情

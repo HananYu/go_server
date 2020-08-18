@@ -210,7 +210,7 @@
         <span>类型：</span>
         <input type="radio" name="type" value="0"/>随笔
         <input type="radio" name="type" value="1" checked="checked"/>随记
-        {{/*        <input type="radio" name="type" value="2"/>随行*/}}
+        <input type="radio" name="type" value="2"/>随行
     </div>
     <div class="div_input">
         <span>标题：</span>
@@ -233,7 +233,7 @@
     </div>
     <div class="div_input_img">
         <span>封面：</span>
-        <input id="img" title="点击插入封面" type="file" accept="image/gif,image/jpeg,image/x-png" multiple="multiple"/>
+        <input id="img" title="点击插入封面" type="file" accept="image/gif,image/jpeg,image/x-png"/>
         <img id="img_pic" src="/statics/images/jia.jpg"/>
     </div>
     <!-- 富文本编辑器 -->
@@ -316,7 +316,7 @@
                     cache: false,
                     data: formData,
                     success: function (data) {
-                        if (data.code == 200) {
+                        if (data.code === 200) {
                             $("#img_pic").attr('src', data.data);
                         } else {
                             alert(data.msg);
@@ -359,7 +359,7 @@
                     },
                     data: JSON.stringify(data),
                     success: function (data) {
-                        if (data.code == 200) {
+                        if (data.code === 200) {
                             location.reload()//刷线当前页面,相当于F5
                         } else {
                             alert(data.msg);

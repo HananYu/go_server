@@ -17,7 +17,7 @@ const (
 	//常量数字
 	CommonZero  int = 0
 	CommonOne   int = 1
-	CommonTWO   int = 2
+	CommonTwo   int = 2
 	CommonThree int = 3
 	CommonFour  int = 4
 	CommonFive  int = 5
