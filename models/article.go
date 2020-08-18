@@ -16,6 +16,22 @@ type Article struct {
 	IsDel        int    `json:"isDel" gorm:"column:is_del"`
 }
 
+//用于返回列表，减少内容的返回，
+type ArticleList struct {
+	Id           int    `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
+	CreateDate   int    `json:"createDate" gorm:"column:create_date"`
+	CreateBy     int    `json:"createBy" gorm:"column:create_by"`
+	UpdateDate   int    `json:"updateDate" gorm:"column:update_date"`
+	UpdateBy     int    `json:"updateBy" gorm:"column:update_by"`
+	Title        string `json:"title"`
+	Label        string `json:"label"`
+	Type         int    `json:"type"`
+	SmallContent string `json:"smallContent" gorm:"column:small_content"`
+	Img          string `json:"img"`
+	ReadNum      int    `json:"readNum" gorm:"column:read_num"`
+	IsDel        int    `json:"isDel" gorm:"column:is_del"`
+}
+
 type ArticleName struct {
 	Id           int    `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	CreateDate   int    `json:"createDate" gorm:"column:create_date"`

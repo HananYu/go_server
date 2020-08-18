@@ -69,7 +69,7 @@ func GetArticleList(c *gin.Context) {
 		//设置当前页默认值
 		page.CurrentPage = config.CommonOne
 	}
-	var arts []models.Article
+	var arts []models.ArticleList
 	config.Db.Table("work_article").Where("is_del=?", config.CommonZero).Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.CommonOne) * page.PageSize).Find(&arts)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
 }

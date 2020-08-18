@@ -742,7 +742,8 @@ input[type="search"]::-webkit-search-decoration {
 #main {
 	background: #fff;
 	position: relative;
-	z-index: 2
+	z-index: 2;
+	overflow: hidden;
 }
 
 .container {
@@ -2598,7 +2599,7 @@ nav#comments-navi {
     text-transform: uppercase;
     color: #888;
     background: #eee;
-    border-radius: 4px;	
+    border-radius: 4px;
 }
 
 .comment-respond input[type=submit]:hover {

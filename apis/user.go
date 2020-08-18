@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+//修改密码
 func ChangePassword(c *gin.Context) {
 	var user models.User
 	err := c.BindJSON(&user)

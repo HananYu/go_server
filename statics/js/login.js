@@ -143,6 +143,8 @@ $(function () {
 
     //校验用户名是否已经存在
     $("#regname").blur(function () {
+        alert("私人博客，暂不提供注册！！！")
+        return
         if ($("#regname").val()){
             $.ajax({
                 url: url.baseUrl + "api/basic/account?account="+ $("#regname").val(),
@@ -164,6 +166,8 @@ $(function () {
 
     //注册
     $("#logon").click(function () {
+        alert("私人博客，暂不提供注册！！！")
+        return
         let data = {};
         data.account = $("#regname").val();
         data.password = $("#regpass").val();
