@@ -242,9 +242,8 @@
     <script type='text/javascript' src='/statics/js/gravatar.js'></script>
     <script type="text/javascript" src="/statics/js/config.js"></script>
     <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
-    //通过搜狐获取客户端的IP
     <script>
-        let cip = returnCitySN["cip"] //获取当前客户端的IP
+        let cip = returnCitySN["cip"] //获取当前客户端的IP，配合上面引入https://pv.sohu.com/cityjson?ie=utf-8
         let token = localStorage.getItem('token') //获取token，判断是否显示修改按钮
         window.onscroll = function () {
             var scrollTop = document.body.scrollTop;
@@ -318,7 +317,7 @@
             //提交数据
             $("#submit").click(function () {
                 var obj = {};
-                obj.aId = parseInt(id);
+                obj.aId = parseInt(getUrlParam('id'));
                 obj.nikeName = $("#author").val();
                 obj.email = $("#email").val();
                 obj.phone = $("#phone").val();

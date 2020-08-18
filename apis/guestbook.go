@@ -21,7 +21,6 @@ func InsetGuestBook(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	book.Ip = c.ClientIP()
 	book.CreateTime = int(time.Now().Unix())
 	config.Db.Table("work_review").Create(&book)
 	c.JSON(http.StatusOK, models.SuccCode)
