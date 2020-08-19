@@ -2,9 +2,9 @@ package config
 
 const (
 	//配置文件----开发
-	SavePathUrl string = "F:/Temp/"                                                             //文件保存路径
-	ServiceUrl  string = "http://192.168.99.198:8000/file/"                                     //文件访问地址
-	MysqlUrl    string = "root:921115@tcp(111.230.12.75:3306)/yusj?charset=utf8&parseTime=true" //数据库配置
+	SavePathUrl string = "F:/Temp/"                                                              //文件保存路径
+	ServiceUrl  string = "http://192.168.99.198:8000/file/"                                      //文件访问地址
+	MysqlUrl    string = "root:921115@tcp(192.168.99.199:3306)/yusj?charset=utf8&parseTime=true" //数据库配置
 
 	//配置文件----上线
 	//SavePathUrl string = "/home/temp/"                                                   //文件保存路径
@@ -37,6 +37,19 @@ const (
 	CommonArticleTypeTwo  string = "随行"
 	CommonCurrentPage     string = "currentPage"
 	CommonPageSize        string = "pageSize"
+	CommonImageIndex      string = "<img src="
+	CommonImageLast       string = ">"
+
+	//符号
+	CommonComma string = ","
+
+	//图片常量
+	CommonPng string = "png"
+	CommonGif string = "gif"
+
+	//bool
+	CommonTrue  bool = true
+	CommonFalse bool = false
 
 	//常量数字
 	CommonZero  int = 0

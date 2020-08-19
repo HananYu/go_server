@@ -104,6 +104,9 @@ func Login(c *gin.Context) {
 		ut.UserId = ur.Id
 		ut.CreateDate = int(time.Now().Unix())      //10位时间戳精确到秒
 		ut.EndDate = ut.CreateDate + (12 * 60 * 60) //有效时间为12小时
+		//删除该用户之前的所有的token记录
+		config.Db.Table(config.DataTableToken).Where("user_id=?", ur.Id).Delete(models.UserToken{})
+		//再创建用户新的token记录
 		config.Db.Table(config.DataTableToken).Create(&ut)
 		c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, token))
 		return

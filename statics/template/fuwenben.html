@@ -308,13 +308,16 @@
                 const formData = new FormData();
                 formData.append("file", this.files[0]);
                 $.ajax({
-                    url: url.baseUrl + "api/basic/upload",
+                    url: url.baseUrl + "api/basic/uploadImg",
                     type: 'post',
                     enctype: 'multipart/form-data',
                     processData: false,
                     contentType: false,
                     cache: false,
                     data: formData,
+                    beforeSend: function (XMLHttpRequest) {
+                        XMLHttpRequest.setRequestHeader('token', localStorage.getItem('token'));
+                    },
                     success: function (data) {
                         if (data.code === 200) {
                             $("#img_pic").attr('src', data.data);

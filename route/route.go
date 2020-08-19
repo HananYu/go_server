@@ -56,6 +56,7 @@ func InitRouter() *gin.Engine {
 	router.GET("/api/getH", GetHttp) //用于校验用户token
 
 	//文章接口
+	router.POST("/api/basic/uploadImg", UploadFileCompress)    //上传封面接口
 	router.POST("/api/article/add", InserTArticle)             //保存文章接口
 	router.GET("/api/article/getArt", GetArticleDetail)        //获取文章详情，用于修改使用
 	router.POST("/api/article/uploadArt", UploadArticleDetail) //更新文章详情

@@ -3,9 +3,11 @@ package apis
 import (
 	"gin/config"
 	"gin/models"
+	"gin/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/satori/go.uuid"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -13,7 +15,6 @@ import (
 
 //上传文件
 func UploadFile(c *gin.Context) {
-	//单文件
 	file, err := c.FormFile(config.CommonFile)
 	if err != nil {
 		c.JSON(http.StatusOK, models.ReqCode)
@@ -23,8 +24,29 @@ func UploadFile(c *gin.Context) {
 	i := strings.LastIndex(name, ".") //含有sub字段的位置
 	name = strings.ReplaceAll(uuid.Must(uuid.NewV4(), err).String(), "-", config.CommonNull) + name[i:]
 	// 上传文件到指定的路径，保存的文件路径含有文件的名称
-	c.SaveUploadedFile(file, config.SavePathUrl+name)
+	_ = c.SaveUploadedFile(file, config.SavePathUrl+name)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, config.ServiceUrl+name))
+}
+
+//上传图片，用于上传封面，需要对图片进行压缩
+func UploadFileCompress(c *gin.Context) {
+	file, err := c.FormFile(config.CommonFile)
+	if err != nil {
+		c.JSON(http.StatusOK, models.ReqCode)
+		return
+	}
+	name := file.Filename
+	i := strings.LastIndex(name, ".") //含有sub字段的位置
+	name = strings.ReplaceAll(uuid.Must(uuid.NewV4(), err).String(), "-", config.CommonNull) + name[i:]
+	// 上传文件到指定的路径，保存的文件路径含有文件的名称
+	_ = c.SaveUploadedFile(file, config.SavePathUrl+name)
+	url := utils.ChangeImage(config.SavePathUrl + name)
+	if url == config.CommonNull {
+		_ = os.Remove(config.SavePathUrl + name)
+		c.JSON(http.StatusOK, models.SysCode)
+		return
+	}
+	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, url))
 }
 
 //新增文章接口
@@ -50,9 +72,20 @@ func InserTArticle(c *gin.Context) {
 		return
 	}
 	article.CreateDate = int(time.Now().Unix())
-	//https://www.cnblogs.com/linguanh/p/6233013.html 压缩图片
-	//上传时候去内容里面将所有图片找出来，然后进行压缩处理，直接保存到img字段，
-
+	if article.Type == config.CommonTwo {
+		//获取内容里面的所有图片地址，最多取四张，包括封面一张，使用逗号进行分隔
+		var list []string
+		list = utils.GetImageByString(article.Content, list)
+		if len(list) >= config.CommonZero {
+			for i, str := range list {
+				if i > config.CommonThree {
+					break
+				}
+				s := utils.ChangeImageBySize(config.SavePathUrl + str[strings.Index(str, config.ServiceUrl)+len(config.ServiceUrl):])
+				article.Img += config.CommonComma + s
+			}
+		}
+	}
 	config.Db.Table(config.DataTableArticle).Create(&article)
 	c.JSON(http.StatusOK, models.SuccCode)
 }
