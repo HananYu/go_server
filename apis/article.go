@@ -14,14 +14,14 @@ import (
 //上传文件
 func UploadFile(c *gin.Context) {
 	//单文件
-	file, err := c.FormFile("file")
+	file, err := c.FormFile(config.CommonFile)
 	if err != nil {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
 	name := file.Filename
 	i := strings.LastIndex(name, ".") //含有sub字段的位置
-	name = strings.ReplaceAll(uuid.Must(uuid.NewV4(), err).String(), "-", "") + name[i:]
+	name = strings.ReplaceAll(uuid.Must(uuid.NewV4(), err).String(), "-", config.CommonNull) + name[i:]
 	// 上传文件到指定的路径，保存的文件路径含有文件的名称
 	c.SaveUploadedFile(file, config.SavePathUrl+name)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, config.ServiceUrl+name))
@@ -35,11 +35,11 @@ func InserTArticle(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	if article.Title == "" || article.SmallContent == "" || article.Content == "" {
+	if article.Title == config.CommonNull || article.SmallContent == config.CommonNull || article.Content == config.CommonNull {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	userId, bol := c.Get("userId")
+	userId, bol := c.Get(config.TokenUSERID)
 	if !bol {
 		c.JSON(http.StatusOK, models.UserCode)
 		return
@@ -53,7 +53,7 @@ func InserTArticle(c *gin.Context) {
 	//https://www.cnblogs.com/linguanh/p/6233013.html 压缩图片
 	//上传时候去内容里面将所有图片找出来，然后进行压缩处理，直接保存到img字段，
 
-	config.Db.Table("work_article").Create(&article)
+	config.Db.Table(config.DataTableArticle).Create(&article)
 	c.JSON(http.StatusOK, models.SuccCode)
 }
 
@@ -70,29 +70,29 @@ func GetArticleList(c *gin.Context) {
 		page.CurrentPage = config.CommonOne
 	}
 	var arts []models.ArticleList
-	config.Db.Table("work_article").Where("is_del=?", config.CommonZero).Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.CommonOne) * page.PageSize).Find(&arts)
+	config.Db.Table(config.DataTableArticle).Where("is_del=?", config.CommonZero).Order("create_date desc").Limit(page.PageSize).Offset((page.CurrentPage - config.CommonOne) * page.PageSize).Find(&arts)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
 }
 
 //搜索文章列表
 func SearchArticleList(c *gin.Context) {
-	name := c.Query("s")
-	if name == "" {
+	name := c.Query(config.CommonName)
+	if name == config.CommonNull {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
 	name = "%" + name + "%"
 	var arts []models.ArticleName
-	config.Db.Table("work_article").Order("create_date desc").Where("title LIKE ? or small_content LIKE ? or label like ? ", name, name, name).Find(&arts)
+	config.Db.Table(config.DataTableArticle).Order("create_date desc").Where("title LIKE ? or small_content LIKE ? or label like ? ", name, name, name).Find(&arts)
 	for i, n := 0, len(arts); i < n; i++ {
 		if arts[i].Type == config.CommonZero {
-			arts[i].TypeName = "随笔"
+			arts[i].TypeName = config.CommonArticleTypeZero
 		}
 		if arts[i].Type == config.CommonOne {
-			arts[i].TypeName = "随记"
+			arts[i].TypeName = config.CommonArticleTypeOne
 		}
 		if arts[i].Type == config.CommonTwo {
-			arts[i].TypeName = "随行"
+			arts[i].TypeName = config.CommonArticleTypeTwo
 		}
 	}
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, arts))
@@ -100,7 +100,7 @@ func SearchArticleList(c *gin.Context) {
 
 //获取文章详情
 func DetailArticleList(c *gin.Context) {
-	cid := c.Query("id")
+	cid := c.Query(config.CommonId)
 	id, err := strconv.Atoi(cid)
 	if err != nil {
 		c.JSON(http.StatusOK, models.ReqCode)
@@ -108,15 +108,15 @@ func DetailArticleList(c *gin.Context) {
 	}
 	returnMap := make(map[string]interface{}, config.CommonFour)
 	var art models.ArticleName
-	config.Db.Table("work_article").Where("id = ?", id).First(&art)
+	config.Db.Table(config.DataTableArticle).Where("id = ?", id).First(&art)
 	if art.Type == config.CommonZero {
-		art.TypeName = "随笔"
+		art.TypeName = config.CommonArticleTypeZero
 	}
 	if art.Type == config.CommonOne {
-		art.TypeName = "随记"
+		art.TypeName = config.CommonArticleTypeOne
 	}
 	if art.Type == config.CommonTwo {
-		art.TypeName = "随记"
+		art.TypeName = config.CommonArticleTypeTwo
 	}
 	returnMap["obj"] = art //当前文章详情
 	var lastObj models.ArticleSim
@@ -126,7 +126,7 @@ func DetailArticleList(c *gin.Context) {
 	config.Db.Raw("select id, img,  title from work_article where id =(select id from work_article where is_del = 0 and id > ? order by id desc limit 1)", id).Scan(&nextObj)
 	returnMap["nextObj"] = nextObj //下一条文章
 	var books []models.GuestBook
-	config.Db.Table("work_review").Order("create_time desc").Where("a_id = ?", id).Find(&books)
+	config.Db.Table(config.DataTableReview).Order("create_time desc").Where("a_id = ?", id).Find(&books)
 	returnMap["comList"] = books //文章的评论
 	//更新访问量+1
 	config.Db.Exec("UPDATE work_article SET read_num = read_num + 1 where id = ?", id)
@@ -135,14 +135,14 @@ func DetailArticleList(c *gin.Context) {
 
 //仅获取文章详情，用于修改
 func GetArticleDetail(c *gin.Context) {
-	cid := c.Query("id")
+	cid := c.Query(config.CommonId)
 	id, err := strconv.Atoi(cid)
 	if err != nil {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
 	var art models.Article
-	config.Db.Table("work_article").Where("id = ?", id).First(&art)
+	config.Db.Table(config.DataTableArticle).Where("id = ?", id).First(&art)
 	c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, art))
 }
 
@@ -154,11 +154,11 @@ func UploadArticleDetail(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	if art.Id == 0 || art.Title == "" || art.SmallContent == "" || art.Content == "" {
+	if art.Id == config.CommonZero || art.Title == config.CommonNull || art.SmallContent == config.CommonNull || art.Content == config.CommonNull {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	userId, bol := c.Get("userId")
+	userId, bol := c.Get(config.TokenUSERID)
 	if !bol {
 		c.JSON(http.StatusOK, models.UserCode)
 		return
@@ -170,18 +170,18 @@ func UploadArticleDetail(c *gin.Context) {
 	}
 	art.UpdateBy = id
 	art.UpdateDate = int(time.Now().Unix())
-	config.Db.Table("work_article").Save(&art)
+	config.Db.Table(config.DataTableArticle).Save(&art)
 	c.JSON(http.StatusOK, models.SuccCode)
 }
 
 //删除文章，逻辑删除
 func DelArticleByIsDel(c *gin.Context) {
-	cid := c.Query("id")
+	cid := c.Query(config.CommonId)
 	id, err := strconv.Atoi(cid)
 	if err != nil {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	config.Db.Table("work_article").Where("id=?", id).Update("is_del", config.CommonOne)
+	config.Db.Table(config.DataTableArticle).Where("id=?", id).Update("is_del", config.CommonOne)
 	c.JSON(http.StatusOK, models.SuccCode)
 }

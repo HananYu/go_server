@@ -19,13 +19,13 @@ func ChangePassword(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	if user.Account == "" || user.Password == "" {
+	if user.Account == config.CommonNull || user.Password == config.CommonNull {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
 	user.Salt = utils.GetRandomString(6)
 	user.Password = strings.ToLower(utils.MD5([]byte(user.Password + user.Salt)))
-	config.Db.Table("sys_user").Where("account=?", user.Account).Update(map[string]interface{}{"password": user.Password, "salt": user.Salt})
+	config.Db.Table(config.DataTableUser).Where("account=?", user.Account).Update(map[string]interface{}{config.CommonPassword: user.Password, config.TokenSALT: user.Salt})
 	c.JSON(http.StatusOK, models.SuccCode)
 }
 
@@ -37,11 +37,11 @@ func InsertUser(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	if user.Account == "" || user.Password == "" {
+	if user.Account == config.CommonNull || user.Password == config.CommonNull {
 		c.JSON(http.StatusBadRequest, models.ReqCode) //作为错误处理
 		return
 	}
-	config.Db.Table("sys_user").Where("account = ?", user.Account).First(&user)
+	config.Db.Table(config.DataTableUser).Where("account = ?", user.Account).First(&user)
 	if user.Id != config.CommonZero {
 		//账号已经存在，不能进行注册
 		c.JSON(http.StatusOK, models.AccountCode)
@@ -51,15 +51,15 @@ func InsertUser(c *gin.Context) {
 	user.Salt = utils.GetRandomString(6)
 	user.Password = strings.ToLower(utils.MD5([]byte(user.Password + user.Salt)))
 
-	config.Db.Table("sys_user").Create(&user)
+	config.Db.Table(config.DataTableUser).Create(&user)
 	c.JSON(http.StatusOK, models.SuccCode)
 }
 
 //判断用户名是否存在
 func FindByAccount(c *gin.Context) {
-	account := c.Query("account")
+	account := c.Query(config.CommonAccount)
 	var user models.User
-	config.Db.Table("sys_user").Where("account = ?", account).First(&user)
+	config.Db.Table(config.DataTableUser).Where("account = ?", account).First(&user)
 	if user.Id != config.CommonZero {
 		//账号已经存在，不能进行注册
 		c.JSON(http.StatusOK, models.AccountCode)
@@ -70,7 +70,7 @@ func FindByAccount(c *gin.Context) {
 
 //查找用户
 func FindUser(c *gin.Context) {
-	cid := c.Query("id")
+	cid := c.Query(config.CommonId)
 	id, _ := strconv.Atoi(cid)
 	var user models.User
 	config.Db.Raw("select * from sys_user where id =?", id).Scan(&user)
@@ -89,13 +89,13 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	if user.Account == "" || user.Password == "" {
+	if user.Account == config.CommonNull || user.Password == config.CommonNull {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
 	var ur models.User
 	//Table("sys_user").Where("account = ?", user.Account).Select("xxxx).Row().Scan(&xxx)
-	config.Db.Table("sys_user").Where("account = ?", user.Account).First(&ur)
+	config.Db.Table(config.DataTableUser).Where("account = ?", user.Account).First(&ur)
 	if strings.ToLower(utils.MD5([]byte(user.Password+ur.Salt))) == strings.ToLower(ur.Password) {
 		//表示密码一致，则通过，返回token和用户ID
 		token := utils.CreaToken(ur.Id, ur.Salt)
@@ -104,7 +104,7 @@ func Login(c *gin.Context) {
 		ut.UserId = ur.Id
 		ut.CreateDate = int(time.Now().Unix())      //10位时间戳精确到秒
 		ut.EndDate = ut.CreateDate + (12 * 60 * 60) //有效时间为12小时
-		config.Db.Table("sys_user_token").Create(&ut)
+		config.Db.Table(config.DataTableToken).Create(&ut)
 		c.JSON(http.StatusOK, models.RetunMsgFunc(models.SuccCode, token))
 		return
 	}

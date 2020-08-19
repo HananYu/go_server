@@ -49,8 +49,7 @@ func InitRouter() *gin.Engine {
 
 	//静态资源，放置在拦截器之前不会对静态资源进行拦截
 	router.LoadHTMLGlob("statics/template/*")
-	//router.Static("statics", "./statics").Static("file", "F:/Temp/") // 启动静态文件服务
-	router.Static("statics", "./statics").Static("file", "/home/temp/") // 启动静态文件服务
+	router.Static("statics", "./statics").Static("file", config.SavePathUrl) // 启动静态文件服务
 
 	//以下的接口，都使用Authorize()中间件身份验证
 	router.Use(Authorize())
@@ -67,7 +66,7 @@ func InitRouter() *gin.Engine {
 
 func Authorize() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("token") // 访问令牌
+		token := c.GetHeader(config.TokenTOKEN) // 访问令牌
 
 		var ut models.UserToken
 		config.Db.Table("sys_user_token").Where("token = ?", token).First(&ut)
@@ -84,7 +83,7 @@ func Authorize() gin.HandlerFunc {
 			c.JSON(http.StatusOK, models.TokenCode)
 			return
 		}
-		c.Set("userId", ut.UserId)
+		c.Set(config.TokenUSERID, ut.UserId)
 		c.Next()
 	}
 }

@@ -135,10 +135,8 @@
     <script type="text/javascript" src="/statics/js/config.js"></script>
     <script>
         $(function () {
-            var s = decodeURI((window.location.href).split('?')[1].split('=')[1]);
-            var str = s.substr(0, s.indexOf('&'));
             $.ajax({
-                url: url.baseUrl + "api/article/search?s=" + str,
+                url: url.baseUrl + "api/article/search?name=" + getUrlParam("s"),
                 type: 'get',
                 contentType: 'application/json;charset=utf-8',
                 dateType: 'json',

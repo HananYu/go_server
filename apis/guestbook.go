@@ -17,12 +17,12 @@ func InsetGuestBook(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
-	if book.NikeName == "" || book.Content == "" {
+	if book.NikeName == config.CommonNull || book.Content == config.CommonNull {
 		c.JSON(http.StatusOK, models.ReqCode)
 		return
 	}
 	book.CreateTime = int(time.Now().Unix())
-	config.Db.Table("work_review").Create(&book)
+	config.Db.Table(config.DataTableReview).Create(&book)
 	c.JSON(http.StatusOK, models.SuccCode)
 }
 
@@ -46,19 +46,19 @@ func GetArticleRecords(c *gin.Context) {
 
 //获取留言数据
 func GetGuestBooks(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Query("id"))
-	currentPage, _ := strconv.Atoi(c.Query("currentPage"))
+	id, _ := strconv.Atoi(c.Query(config.CommonId))
+	currentPage, _ := strconv.Atoi(c.Query(config.CommonCurrentPage))
 	if currentPage == config.CommonZero {
 		currentPage = config.CommonOne
 	}
 	//留言默认每页请求为5条数据
 	returnMap := make(map[string]interface{}, config.CommonThree)
 	var books []models.GuestBook
-	config.Db.Table("work_review").Order("create_time desc").Where("a_id = ?", id).Limit(config.CommonFive).Offset((currentPage - config.CommonOne) * config.CommonFive).Find(&books)
-	returnMap["list"] = books
+	config.Db.Table(config.DataTableReview).Order("create_time desc").Where("a_id = ?", id).Limit(config.CommonFive).Offset((currentPage - config.CommonOne) * config.CommonFive).Find(&books)
+	returnMap[config.CommonList] = books
 	var maxSize int //必须使用new关键字，不然就会错误 unsupported destination, should be slice or struct
-	config.Db.Table("work_review").Where("a_id = ?", id).Count(&maxSize)
-	maxPage := 0
+	config.Db.Table(config.DataTableReview).Where("a_id = ?", id).Count(&maxSize)
+	maxPage := config.CommonZero
 	if maxSize%config.CommonFive == config.CommonZero {
 		maxPage = maxSize / config.CommonFive
 	} else {
