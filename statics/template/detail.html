@@ -262,13 +262,18 @@
                 async: false,
                 success: function (data) {
                     if (data.code == 200) {
-                        var obj = data.data.obj;
-                        var lastObj = data.data.lastObj;
-                        var nextObj = data.data.nextObj;
-                        var list = data.data.comList;
+                        let obj = data.data.obj;
+                        let lastObj = data.data.lastObj;
+                        let nextObj = data.data.nextObj;
+                        let list = data.data.comList;
+                        let image
+                        if (obj.img.indexOf(",") !== -1) {
+                            //表示含有多个字段img，选择第一个
+                            image = obj.img.split(",")[0];
+                        }
                         //详情主体的渲染
                         var strHtml = '<header class="post_header"><h1 class="post_title ">' + obj.title + '</h1></header>' +
-                            '<div class="blog-card"><div class="blog-card-thumbnail"><img src="' + obj.img +
+                            '<div class="blog-card"><div class="blog-card-thumbnail"><img src="' + image +
                             '" class="blog-card-thumb-image wp-post-image" alt = "" /></div ><div class="blog-card-content"><div class="blog-card-excerpt">' +
                             obj.smallContent + '</div></div></div ><hr /><div class="post-body js-gallery">' + obj.content + '</div >' +
                             '<div class="meta split split--responsive cf"><div class="split__title"><time datetime="2017-10-02 01:44">' + formatDate(obj.createDate) + '</time>' +

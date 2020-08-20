@@ -82,6 +82,10 @@ func InserTArticle(c *gin.Context) {
 					break
 				}
 				s := utils.ChangeImageBySize(config.SavePathUrl + str[strings.Index(str, config.ServiceUrl)+len(config.ServiceUrl):])
+				if s == config.CommonNull {
+					//如果没有缩略成功，则直接使用原始的图片
+					s = str
+				}
 				article.Img += config.CommonComma + s
 			}
 		}

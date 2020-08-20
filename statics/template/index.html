@@ -219,7 +219,6 @@
                 data: JSON.stringify(data),
                 success: function (data) {
                     if (data.code === 200) {
-                        // let list=new Array()
                         let list = data.data;
                         if (list === '' || list == null || list.length === 0) {
                             flag = true;
@@ -248,25 +247,25 @@
                                 }else {
                                 	//表示其它
                                 	var img = res.img;
-                                	if (img.indexOf(",") == -1) {
+                                	if (img.indexOf(",") === -1) {
                                 		//只含有一张图片
                                 		strHtml += '<div class="post post-layout-list js-gallery" data-aos="fade-up"><div class="post-album"><div class="row content"><div class="bg"' +
-                                			'style="background-image: url(' + img + ');"></div><div class="contentext flex-xs-middle"><div class="album-title"><a href="detail.html?id=' + res.id + '" >[ ' + res.label + ' ]  ' + res.title + '</a></div>' +
+                                			'style="background-image: url(' + img + ');"></div><div class="contentext flex-xs-middle"><div class="album-title"><a href="detail?id=' + res.id + '" >[ ' + res.label + ' ]  ' + res.title + '</a></div>' +
                                 			'<h5 class="review-item-creator"><b>发布日期：</b>' + formatTime(res.createDate) + '</h5><div class="album-content">' + res.smallContent + '</div></div>' +
                                 			'<div class="album-thumb-width flex-xs-middle"><div class="row album-thumb no-gutter">' +
                                 			'<div class="col-xs-4"><img class="thumb" src="' + img + '" /></div>' +
-                                			'<div class="col-xs-4"><a href="">1 pics</a></div></div></div></div></div></div>';
+                                			'<div class="col-xs-4"><a href="detail?id='+ res.id +'">1 pics</a></div></div></div></div></div></div>';
                                 	} else {
                                 		//表示有多张图片
-                                		var imgList = img.substring(0, img.length - 1).split(",");
+                                		let imgList = img.split(",");
                                 		strHtml += '<div class="post post-layout-list js-gallery" data-aos="fade-up"><div class="post-album"><div class="row content"><div class="bg"' +
-                                			'style="background-image: url(' + imgList[0] + ');"></div><div class="contentext flex-xs-middle"><div class="album-title"><a href="detail.html?id=' + res.id + '" >[ ' + res.label + ' ]  ' + res.title + '</a></div>' +
+                                			'style="background-image: url(' + imgList[0] + ');"></div><div class="contentext flex-xs-middle"><div class="album-title"><a href="detail?id=' + res.id + '" >[ ' + res.label + ' ]  ' + res.title + '</a></div>' +
                                 			'<h5 class="review-item-creator"><b>发布日期：</b>' + formatTime(res.createDate) + '</h5><div class="album-content">' + res.smallContent + '</div></div>' +
                                 			'<div class="album-thumb-width flex-xs-middle"><div class="row album-thumb no-gutter">';
                                 		for (let value of imgList) {
                                 			strHtml += '<div class="col-xs-4"><img class="thumb" src="' + value + '" /></div>';
                                 		}
-                                		strHtml += '<div class="col-xs-4"><a href="">' + imgList.length + ' pics</a></div></div></div></div></div></div>';
+                                		strHtml += '<div class="col-xs-4"><a href="detail?id='+ res.id +'">' + imgList.length + ' pics</a></div></div></div></div></div></div>';
                                 	}
                                 }
                             }

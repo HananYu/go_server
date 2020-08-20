@@ -13,21 +13,23 @@ import (
 	"strings"
 )
 
-//返回内容里面的所有图片地址，识别存在问题
+//返回内容里面的所有图片地址
 func GetImageByString(content string, list []string) []string {
-	if len(content) > config.CommonZero {
-		if strings.Contains(content, config.CommonImageIndex) {
-			i := strings.Index(content, config.CommonImageIndex)
-			content = content[(i + len(config.CommonImageIndex) + config.CommonOne):]
-			j := strings.Index(content, config.CommonImageLast)
-			img := content[0 : j-config.CommonOne]
-			//fmt.Println("图片地址----------"+img)
-			list = append(list, img)
-			content = content[j:]
-			GetImageByString(content, list)
-		}
+	if len(content) <= config.CommonZero {
+		return list
 	}
-	return list
+	if !strings.Contains(content, config.CommonImageIndex) {
+		return list
+	}
+	i := strings.Index(content, config.CommonImageIndex)
+	content = content[(i + len(config.CommonImageIndex) + config.CommonOne):]
+	j := strings.Index(content, config.CommonImageLast)
+	img := content[0 : j-config.CommonOne]
+	fmt.Println("图片地址----------" + img)
+	list = append(list, img)
+	content = content[j:]
+	//fmt.Println("content内容----------"+content)
+	return GetImageByString(content, list)
 }
 
 //传入完整的图片路径，压缩图片直接返回访问地址，删除原来图片
@@ -72,12 +74,20 @@ func ChangeImageBySize(url string) string {
 	if err != nil {
 		return config.CommonNull
 	}
-	img, _, err := image.Decode(file)
-	if err != nil {
-		//这里应该是图片格式错误
-		return config.CommonNull
+	img, nametype, er := image.Decode(file)
+	if er != nil {
+		//表示不是jpg类型，或者是不可识别类型
+		i := strings.LastIndex(file.Name(), ".") //含有sub字段的位置
+		nametype = file.Name()[i+config.CommonOne:]
+		if nametype == config.CommonPng {
+			img, er = png.Decode(file)
+		} else if nametype == config.CommonGif {
+			img, er = gif.Decode(file)
+		} else {
+			return config.CommonNull
+		}
 	}
-	name := strings.ReplaceAll(uuid.Must(uuid.NewV4(), err).String(), "-", config.CommonNull)
+	name := strings.ReplaceAll(uuid.Must(uuid.NewV4(), err).String(), "-", config.CommonNull) + "." + nametype
 	//高度设置为0，则高度会根据原来宽高比例来设置
 	m := resize.Resize(200, 0, img, resize.NearestNeighbor)
 	newFile, _ := os.Create(config.SavePathUrl + name)
