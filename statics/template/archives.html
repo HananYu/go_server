@@ -163,7 +163,7 @@
                             for (var j = 1; j < list.length; j++) {
                                 if (list[i].yearM == list[j].yearM) {
                                     html += '<div class="brick"><a href="detail?id=' + list[j].id + '"><span class="time">' + list[j].dateM +
-                                        '</span>' + list[j].title + '<span>(' + list[j].reviewCount + ')</span></a></div>';
+                                        '</span>[ ' + list[j].label + ' ]  ' + list[j].title + '<span>(' + list[j].reviewCount + ')</span></a></div>';
                                     list.splice(j, 1);
                                     j--;
                                 }

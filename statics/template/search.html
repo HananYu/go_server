@@ -77,7 +77,7 @@
 </div>
 <header id="masthead" class="overlay animated from-bottom" itemprop="brand">
     <div class="site-branding text-center">
-        <a href="index.html">
+        <a href="index">
             <figure>
                 <img class="custom-logo avatar" src="/statics/images/omikron1.png"/>
             </figure>
@@ -135,15 +135,15 @@
     <script type="text/javascript" src="/statics/js/config.js"></script>
     <script>
         $(function () {
+            let str =  getUrlParam("s")
             $.ajax({
-                url: url.baseUrl + "api/article/search?name=" + getUrlParam("s"),
+                url: url.baseUrl + "api/article/search?name=" + str,
                 type: 'get',
                 contentType: 'application/json;charset=utf-8',
                 dateType: 'json',
                 async: false,
                 success: function (data) {
                     if (data.code == 200) {
-                        // console.log(data.data)
                         var list = data.data;
                         var strHtml = '<div class="container"><h1 class="page-title"> 以&ldquo;' + str + '&rdquo;为关键字</h1>' +
                             '<p class="Searchmeta">共计 ' + list.length + ' 篇文章</p><div class="location">当前位置：' +
@@ -154,7 +154,6 @@
                                 '<div class="post-time">' + formatDate(res.createDate) + '</div></h2><div class="post-category">' +
                                 '[ ' + res.typeName + ' ] ' + res.smallContent + '</div></div></div> '
                         }
-
                         strHtml += '<div class="mt+"><div class="pagination js-pagination"><div class="js-next pagination__load">' +
                             '</div></div></div></div>'
                         $("#main").append(strHtml);

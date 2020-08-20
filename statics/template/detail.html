@@ -270,6 +270,8 @@
                         if (obj.img.indexOf(",") !== -1) {
                             //表示含有多个字段img，选择第一个
                             image = obj.img.split(",")[0];
+                        }else{
+                            image = obj.img
                         }
                         //详情主体的渲染
                         var strHtml = '<header class="post_header"><h1 class="post_title ">' + obj.title + '</h1></header>' +
